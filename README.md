@@ -1,6 +1,6 @@
 People working on this project
  1. Innaurato, Matthew
- 2. Hoang, Khoa
+ 2. Hoang, Khoa (Project Owner)
  3. Kwatra, Pratham
 
 A short description of the project:
