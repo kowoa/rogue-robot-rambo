@@ -1,4 +1,5 @@
 People working on this project
+
  1. Innaurato, Matthew
  2. Hoang, Khoa (Project Owner)
  3. Kwatra, Pratham
