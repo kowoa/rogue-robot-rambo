@@ -3,6 +3,7 @@ People working on this project
  1. Innaurato, Matthew
  2. Hoang, Khoa (Project Owner)
  3. Kwatra, Pratham
+ 4. Estrella, Adrienne Lhuc
 
 A short description of the project:
 Our game is a roguelike 2D platformer where the player tries to kill the AI. 
