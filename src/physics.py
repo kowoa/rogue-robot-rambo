@@ -13,6 +13,12 @@ class Vector2D:
     def __str__(self):
         return np.array2string(self.pos)
 
+    def __getitem__(self, index):
+        return self.pos[index]
+
+    def __setitem__(self, index, value):
+        self.pos[index] = value
+
     # Operator Overloading
     def __eq__(self, v):
         if self.pos == v.pos:
@@ -67,7 +73,6 @@ class Force:
         self.acc = acc
 
     def mag(self):
-        print(Vector2D([self.mass * self.acc.pos[0], self.mass * self.acc.pos[1]]))
         return Vector2D([self.mass * self.acc.pos[0], self.mass * self.acc.pos[1]]).mag()
 
 
