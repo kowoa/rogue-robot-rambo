@@ -1,5 +1,7 @@
 import pygame
 import tracker
+from src.player import *
+from src.physics import *
 
 def main():
     # Initialize pygame
@@ -17,14 +19,19 @@ def main():
     # Background
     background = pygame.image.load("resources/backgrounds/background1.png")
 
+
+    # Initialize player object
+    player = Player(Vector2D([640,460]), Vector2D([0,0]), 10, Vector2D([1,0]))
+
+
     # Display player
     # TODO: replace player image
     playerImg = pygame.image.load("resources/sprites/terror.png")
     playerImg = pygame.transform.scale(playerImg, (128, 128))
-    playerX = 640
-    playerY = 360
+    #playerX = 640
+    #playerY = 360
     def displayPlayer():
-        screen.blit(playerImg, (playerX, playerY))
+        screen.blit(playerImg, (player.pos[0], player.pos[1]))
 
     clock = pygame.time.Clock()
     # Display FPS later in game loop
@@ -43,6 +50,8 @@ def main():
 
         screen.blit(background, (0, 0))
 
+        player.acc[0] = -1
+        player.applyForce(Force(player.mass, player.acc))
         displayPlayer()
 
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'

@@ -18,4 +18,3 @@ class Player:
         self.force = force
         self.vel += self.force.acc
         self.pos += self.vel
-
