@@ -11,12 +11,15 @@ def main():
     # Title and icon
     pygame.display.set_caption("Boss Battle")
     # TODO: replace icon image
-    icon = pygame.image.load("oubliette.png")
+    icon = pygame.image.load("resources/sprites/oubliette.png")
     pygame.display.set_icon(icon)
+
+    # Background
+    background = pygame.image.load("resources/backgrounds/background1.png")
 
     # Display player
     # TODO: replace player image
-    playerImg = pygame.image.load("terror.png")
+    playerImg = pygame.image.load("resources/sprites/terror.png")
     playerImg = pygame.transform.scale(playerImg, (128, 128))
     playerX = 640
     playerY = 360
@@ -25,7 +28,7 @@ def main():
 
     clock = pygame.time.Clock()
     # Display FPS later in game loop
-    FPS = 30
+    FPS = 60
     FPSFont = pygame.font.SysFont("monospace", 26)
 
     # Display timer later in game loop
@@ -38,17 +41,16 @@ def main():
             if event.type == pygame.QUIT:
                 isRunning = False
 
-        # RGB background
-        screen.fill((255, 255, 0))
+        screen.blit(background, (0, 0))
 
         displayPlayer()
 
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
         clock.tick(FPS)
-        FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
+        FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), True, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
-        timerText = timerFont.render("Time elapsed: {:.2f}".format(tracker.getTimeElapsed()), False, (0, 0, 0))
+        timerText = timerFont.render("Time elapsed: {:.2f}".format(tracker.getTimeElapsed() / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
