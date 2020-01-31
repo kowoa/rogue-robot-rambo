@@ -11,12 +11,15 @@ def main():
     # Title and icon
     pygame.display.set_caption("Boss Battle")
     # TODO: replace icon image
-    icon = pygame.image.load("oubliette.png")
+    icon = pygame.image.load("resources/sprites/oubliette.png")
     pygame.display.set_icon(icon)
+
+    # Background
+    background = pygame.image.load("resources/backgrounds/background1.png")
 
     # Display player
     # TODO: replace player image
-    playerImg = pygame.image.load("terror.png")
+    playerImg = pygame.image.load("resources/sprites/terror.png")
     playerImg = pygame.transform.scale(playerImg, (128, 128))
     playerX = 640
     playerY = 360
@@ -38,8 +41,7 @@ def main():
             if event.type == pygame.QUIT:
                 isRunning = False
 
-        # RGB background
-        screen.fill((255, 255, 0))
+        screen.blit(background, (0, 0))
 
         displayPlayer()
 
