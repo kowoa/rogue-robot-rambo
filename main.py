@@ -1,5 +1,6 @@
 import pygame
 import tracker
+import pause
 from src.player import *
 from src.physics import *
 
@@ -47,6 +48,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 isRunning = False
+            # Calls pause function when the key P is pressed.
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    pause()
 
         screen.blit(background, (0, 0))
 
