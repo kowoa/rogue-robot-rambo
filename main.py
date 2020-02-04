@@ -3,6 +3,7 @@ import tracker
 from src.player import *
 from src.physics import *
 
+
 def main():
     # Initialize pygame
     pygame.init()
@@ -19,17 +20,15 @@ def main():
     # Background
     background = pygame.image.load("resources/backgrounds/background1.png")
 
-
     # Initialize player object
-    player = Player(Vector2D([640,460]), Vector2D([0,0]), 10, Vector2D([1,0]))
-
+    player = Player(10, Vector2D([640, 460]), Vector2D([0, 0]), Vector2D([1, 0]))
 
     # Display player
     # TODO: replace player image
     playerImg = pygame.image.load("resources/sprites/terror.png")
     playerImg = pygame.transform.scale(playerImg, (128, 128))
-    #playerX = 640
-    #playerY = 360
+
+    # Display the player using Vector2D coordinates
     def displayPlayer():
         screen.blit(playerImg, (player.pos[0], player.pos[1]))
 
@@ -84,8 +83,7 @@ def main():
 
         screen.blit(background, (0, 0))
 
-        player.acc[0] = -1
-        player.applyForce(Force(player.mass, player.acc))
+        player.update()
         displayPlayer()
 
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
@@ -98,6 +96,7 @@ def main():
 
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
+
 
 if __name__ == "__main__":
     main()
