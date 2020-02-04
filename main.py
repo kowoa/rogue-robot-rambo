@@ -1,6 +1,5 @@
 import pygame
 import tracker
-import pause
 from src.player import *
 from src.physics import *
 
@@ -42,6 +41,36 @@ def main():
     # Display timer later in game loop
     timerFont = pygame.font.SysFont("monospace", 26)
 
+    # For the Pause menu function 
+    messageToScreen = pygame.font.SysFont("monospace", 46)
+
+    def pause():
+        paused = True
+
+        # Loop for pause function
+        while paused:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                # Option to continue or quit in pause menu
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_c:
+                        paused = False
+                    elif event.key == pygame.K_q:
+                        pygame.quit()
+                        quit()
+            #Displays Pause menu 
+            screen.fill((255,255,255))
+            pauseMenu = messageToScreen.render("Paused", True, (0,0,200))
+            screen.blit(pauseMenu, (500, 320))
+            
+            optionsMenu = messageToScreen.render("Press C to Continue or Q to Quit", True, (0,0,200))
+            screen.blit(optionsMenu, (200, 440))
+
+            pygame.display.update()
+            clock.tick(60)
+
     # Game loop
     isRunning = True
     while isRunning:
@@ -51,7 +80,7 @@ def main():
             # Calls pause function when the key P is pressed.
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
-                    pause.pause()
+                    pause()
 
         screen.blit(background, (0, 0))
 
