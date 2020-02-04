@@ -50,7 +50,7 @@ def main():
             # Calls pause function when the key P is pressed.
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
-                    pause()
+                    pause.pause()
 
         screen.blit(background, (0, 0))
 

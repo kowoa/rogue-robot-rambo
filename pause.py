@@ -18,7 +18,7 @@ def pause():
                     pygame.quit()
                     quit()
         # **Screen does not fill in white or place message onto screen. Instead exits the program.**
-        screen.fill(white)
+        global screen.fill(white)
         message_to_screen("Paused",
                           blue,
                           -100,
