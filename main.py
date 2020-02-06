@@ -13,7 +13,7 @@ def main():
     background = pygame.image.load("resources/backgrounds/background1.png")
 
     # Initialize player object
-    playerImg = pygame.image.load("resources/sprites/terror.png")
+    playerImg = pygame.image.load("resources/sprites/boss.png")
     playerImg = pygame.transform.scale(playerImg, (32, 32))
 
     # Initialize game clock for tracking FPS and timers
