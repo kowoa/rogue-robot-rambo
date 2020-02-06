@@ -82,7 +82,7 @@ def main():
 
         timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(0) / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
-
+        screen.blit(playerImg, (100,100))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
 
