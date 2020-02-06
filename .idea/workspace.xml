@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ee21e84c-3daa-4999-b096-b3014e0263ae" name="Default Changelist" comment="Change background">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml~Stashed changes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml~Stashed changes_0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/environment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/physics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/physics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tracker.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="667" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
+  </component>
+  <component name="ProjectId" id="1X5SZdBhLjqJy5ex6h3JPGarxmE" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/resources/backgrounds" />
+      <recent name="$PROJECT_DIR$/resources/sprites" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.TensorFlowBeginnerQuickstart">
+    <configuration name="TensorFlowBeginnerQuickstart" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="667" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../Neural Networks" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../Neural Networks/TensorFlowBeginnerQuickstart.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tracker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="667" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/tracker.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.tracker" />
+        <item itemvalue="Python.TensorFlowBeginnerQuickstart" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ee21e84c-3daa-4999-b096-b3014e0263ae" name="Default Changelist" comment="" />
+      <created>1580334519018</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580334519018</updated>
+      <workItem from="1580334523397" duration="1919000" />
+      <workItem from="1580349760936" duration="79000" />
+      <workItem from="1580349938910" duration="234000" />
+      <workItem from="1580350195201" duration="5654000" />
+      <workItem from="1580396267780" duration="3704000" />
+      <workItem from="1580417486156" duration="100000" />
+      <workItem from="1580437631530" duration="6267000" />
+      <workItem from="1580490795429" duration="139000" />
+      <workItem from="1580492834387" duration="752000" />
+      <workItem from="1580496989799" duration="3649000" />
+      <workItem from="1580504796352" duration="128000" />
+      <workItem from="1580676418622" duration="1216000" />
+      <workItem from="1580768351223" duration="119000" />
+      <workItem from="1580832131419" duration="144000" />
+      <workItem from="1580833182769" duration="23000" />
+      <workItem from="1580842767230" duration="10000" />
+      <workItem from="1580852755308" duration="292000" />
+      <workItem from="1580926895315" duration="1374000" />
+      <workItem from="1580956643863" duration="4948000" />
+      <workItem from="1580962200810" duration="1020000" />
+      <workItem from="1580996634173" duration="2630000" />
+      <workItem from="1580999296341" duration="2349000" />
+    </task>
+    <task id="LOCAL-00001" summary="Create Main.py, add pygame, add imgui">
+      <created>1580335570006</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1580335570006</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Create main.py">
+      <created>1580336191394</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1580336191394</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Create game loop inside main.py">
+      <created>1580355637950</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1580355637950</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Display player sprite">
+      <created>1580405546898</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1580405546899</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add display for FPS and time, add primitive score formula">
+      <created>1580443649045</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1580443649045</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Change FPS">
+      <created>1580497723654</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1580497723654</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Organize images">
+      <created>1580498556915</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1580498556915</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Change background">
+      <created>1580499441052</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1580499441052</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Create Main.py, add pygame, add imgui" />
+    <MESSAGE value="Create main.py" />
+    <MESSAGE value="Create game loop inside main.py" />
+    <MESSAGE value="Display player sprite" />
+    <MESSAGE value="Add display for FPS and time, add primitive score formula" />
+    <MESSAGE value="Change FPS" />
+    <MESSAGE value="Organize images" />
+    <MESSAGE value="Change background" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change background" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="322" y="208" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580999427768">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="322" y="208" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1580999427768" />
+    <state x="595" y="300" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1581002031655">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="595" y="300" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1581002031655" />
+    <state x="565" y="192" key="CommitChangelistDialog2" timestamp="1580997851087">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="565" y="192" key="CommitChangelistDialog2/0.23.1792.1015@0.23.1792.1015" timestamp="1580997851087" />
+    <state x="851" y="454" key="FileChooserDialogImpl" timestamp="1580354984131">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="851" y="454" key="FileChooserDialogImpl/0.23.1792.1015@0.23.1792.1015" timestamp="1580354984131" />
+    <state width="1283" height="368" key="GridCell.Tab.0.bottom" timestamp="1580963327845">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="844" height="368" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1580956943276" />
+    <state width="1283" height="368" key="GridCell.Tab.0.bottom/0.23.1792.1015@0.23.1792.1015" timestamp="1580963327845" />
+    <state width="1283" height="368" key="GridCell.Tab.0.center" timestamp="1580963327845">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="844" height="368" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1580956943275" />
+    <state width="1283" height="368" key="GridCell.Tab.0.center/0.23.1792.1015@0.23.1792.1015" timestamp="1580963327845" />
+    <state width="1283" height="368" key="GridCell.Tab.0.left" timestamp="1580963327845">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="844" height="368" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1580956943274" />
+    <state width="1283" height="368" key="GridCell.Tab.0.left/0.23.1792.1015@0.23.1792.1015" timestamp="1580963327845" />
+    <state width="1283" height="368" key="GridCell.Tab.0.right" timestamp="1580963327845">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="844" height="368" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1580956943276" />
+    <state width="1283" height="368" key="GridCell.Tab.0.right/0.23.1792.1015@0.23.1792.1015" timestamp="1580963327845" />
+    <state width="1167" height="327" key="GridCell.Tab.1.bottom" timestamp="1580356141970">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="1167" height="327" key="GridCell.Tab.1.bottom/0.23.1792.1015@0.23.1792.1015" timestamp="1580356141970" />
+    <state width="1167" height="327" key="GridCell.Tab.1.center" timestamp="1580356141970">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="1167" height="327" key="GridCell.Tab.1.center/0.23.1792.1015@0.23.1792.1015" timestamp="1580356141970" />
+    <state width="1167" height="327" key="GridCell.Tab.1.left" timestamp="1580356141969">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="1167" height="327" key="GridCell.Tab.1.left/0.23.1792.1015@0.23.1792.1015" timestamp="1580356141969" />
+    <state width="1167" height="327" key="GridCell.Tab.1.right" timestamp="1580356141970">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state width="1167" height="327" key="GridCell.Tab.1.right/0.23.1792.1015@0.23.1792.1015" timestamp="1580356141970" />
+    <state x="141" y="129" key="MergeDialog" timestamp="1580926969885">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="141" y="129" key="MergeDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1580926969885" />
+    <state x="569" y="269" key="MultipleFileMergeDialog" timestamp="1580926973510">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="569" y="269" key="MultipleFileMergeDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1580926973510" />
+    <state x="214" y="219" key="SettingsEditor" timestamp="1581002336632">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="214" y="219" key="SettingsEditor/0.23.1792.1015@0.23.1792.1015" timestamp="1581002336632" />
+    <state x="570" y="254" key="Vcs.Push.Dialog.v2" timestamp="1580499453783">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="570" y="254" key="Vcs.Push.Dialog.v2/0.23.1792.1015@0.23.1792.1015" timestamp="1580499453783" />
+    <state x="295" y="379" key="com.intellij.ide.util.TipDialog" timestamp="1580999298778">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="295" y="379" key="com.intellij.ide.util.TipDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1580999298778" />
+    <state x="754" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580999408491">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="754" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.1792.1015@0.23.1792.1015" timestamp="1580999408491" />
+    <state x="604" y="266" key="git4idea.branch.GitSmartOperationDialog" timestamp="1580997839413">
+      <screen x="0" y="23" width="1792" height="1015" />
+    </state>
+    <state x="604" y="266" key="git4idea.branch.GitSmartOperationDialog/0.23.1792.1015@0.23.1792.1015" timestamp="1580997839413" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/667$world.coverage" NAME="world Coverage Results" MODIFIED="1580439229617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/667$TensorFlowBeginnerQuickstart.coverage" NAME="TensorFlowBeginnerQuickstart Coverage Results" MODIFIED="1580350111315" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../Neural Networks" />
+    <SUITE FILE_PATH="coverage/667$main.coverage" NAME="main Coverage Results" MODIFIED="1580963299737" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

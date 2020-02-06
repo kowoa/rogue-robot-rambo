@@ -1,48 +1,40 @@
 import pygame
-import tracker
 from src.player import *
 from src.physics import *
 
-
 def main():
-    # Initialize pygame
+
     pygame.init()
-
-    # Create screen with 1280x720 resolution
+    # Initialize display, icon, background
     screen = pygame.display.set_mode((1280, 720))
-
-    # Title and icon
     pygame.display.set_caption("Boss Battle")
-    # TODO: replace icon image
     icon = pygame.image.load("resources/sprites/oubliette.png")
     pygame.display.set_icon(icon)
-
-    # Background
     background = pygame.image.load("resources/backgrounds/background1.png")
 
     # Initialize player object
-    player = Player(10, Vector2D([640, 460]), Vector2D([0, 0]), Vector2D([1, 0]))
-
-    # Display player
-    # TODO: replace player image
     playerImg = pygame.image.load("resources/sprites/terror.png")
-    playerImg = pygame.transform.scale(playerImg, (128, 128))
+    playerImg = pygame.transform.scale(playerImg, (32, 32))
 
-    # Display the player using Vector2D coordinates
-    def displayPlayer():
-        screen.blit(playerImg, (player.pos[0], player.pos[1]))
-
+    # Initialize game clock for tracking FPS and timers
     clock = pygame.time.Clock()
+
     # Display FPS later in game loop
-    FPS = 60
+    FPS = 30
     FPSFont = pygame.font.SysFont("monospace", 26)
 
     # Display timer later in game loop
     timerFont = pygame.font.SysFont("monospace", 26)
 
-    # For the Pause menu function 
-    messageToScreen = pygame.font.SysFont("monospace", 46)
+    # Display pause menu later in game loop
+    pauseFont = pygame.font.SysFont("monospace", 46)
 
+    # Returns difference between current time and earlier time entered as parameter
+    startTime = pygame.time.get_ticks()
+    def getTimeElapsed(startTime):
+        return pygame.time.get_ticks() - startTime
+
+    # Display and undisplay pause menu
     def pause():
         paused = True
 
@@ -59,16 +51,16 @@ def main():
                     elif event.key == pygame.K_q:
                         pygame.quit()
                         quit()
-            #Displays Pause menu 
-            screen.fill((255,255,255))
-            pauseMenu = messageToScreen.render("Paused", True, (0,0,200))
+            # Displays Pause menu
+            screen.fill((255, 255, 255))
+            pauseMenu = pauseFont.render("Paused", True, (0, 0, 200))
             screen.blit(pauseMenu, (500, 320))
-            
-            optionsMenu = messageToScreen.render("Press C to Continue or Q to Quit", True, (0,0,200))
+
+            optionsMenu = pauseFont.render("Press C to Continue or Q to Quit", True, (0, 0, 200))
             screen.blit(optionsMenu, (200, 440))
 
             pygame.display.update()
-            clock.tick(60)
+            clock.tick(FPS)
 
     # Game loop
     isRunning = True
@@ -83,15 +75,12 @@ def main():
 
         screen.blit(background, (0, 0))
 
-        player.update()
-        displayPlayer()
-
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
         clock.tick(FPS)
         FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), True, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
-        timerText = timerFont.render("Time elapsed: {:.2f}".format(tracker.getTimeElapsed() / 1000), True, (0, 0, 0))
+        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed() / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
