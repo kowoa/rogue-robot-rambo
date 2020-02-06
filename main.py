@@ -13,7 +13,7 @@ def main():
     background = pygame.image.load("resources/backgrounds/background1.png")
 
     # Initialize player object
-    playerImg = pygame.image.load("resources/sprites/terror.png")
+    playerImg = pygame.image.load("resources/sprites/boss.png")
     playerImg = pygame.transform.scale(playerImg, (32, 32))
 
     # Initialize game clock for tracking FPS and timers
@@ -80,7 +80,7 @@ def main():
         FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), True, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
-        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed() / 1000), True, (0, 0, 0))
+        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(0) / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
