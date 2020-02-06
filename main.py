@@ -30,7 +30,6 @@ def main():
     pauseFont = pygame.font.SysFont("monospace", 46)
 
     # Returns difference between current time and earlier time entered as parameter
-    startTime = pygame.time.get_ticks()
     def getTimeElapsed(startTime):
         return pygame.time.get_ticks() - startTime
 
@@ -80,7 +79,8 @@ def main():
         FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), True, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
-        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(0) / 1000), True, (0, 0, 0))
+        startTime = 0
+        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
         screen.blit(playerImg, (100,100))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
