@@ -1,5 +1,5 @@
 import pygame
-from src.player import *
+from src.entity  import *
 from src.physics import *
 
 def main():
