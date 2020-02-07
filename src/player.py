@@ -2,4 +2,5 @@ from src.entity import *
 
 
 class Player(Entity):
-    abc = 1
+    def __init__(self):
+        a = 1

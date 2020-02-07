@@ -1,8 +1,15 @@
 import pygame
-from src.entity  import *
+from src.entity import *
 from src.physics import *
+import numpy as np
 
 def main():
+
+
+
+
+    e = Entity(1, np.array([100, 100]), np.array([0,0]), np.array([1,0]))
+
 
     pygame.init()
     # Initialize display, icon, background
@@ -82,7 +89,9 @@ def main():
         startTime = 0
         timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
-        screen.blit(playerImg, (100,100))
+
+        screen.blit(playerImg, (e.pos[0], e.pos[1]))
+        e.physics.updatePhysics()
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
 
@@ -91,3 +100,4 @@ if __name__ == "__main__":
     main()
 else:
     print("You ran the program from the wrong module. Please run \'main.py\'.")
+

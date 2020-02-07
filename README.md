@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+Khoa Hoang's branch
+=======
 People working on this project
 
  1. Innaurato, Matthew
@@ -13,3 +16,4 @@ The defining feature of this game entails that the AI learns your moves and
 eventually either you improve or let the AI get to you. 
 Each time the AI improves, 
 we give the player a chance by improving the player’s statistics.
+>>>>>>> b9e5dbbab8dc89eaa14cf99f0ffcf01b590f268a
