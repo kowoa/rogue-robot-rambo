@@ -16,11 +16,8 @@ class Physics():
     def applyForce(self, force):
         acc = (self.force // self.mass)
 
-    def applyGravity(self):
-        self.acc += 1
-
-    # Frame-dependent methods
-    # Update function for player. Utilized for all calculations per one frame
-    def update(self):
+    def updatePhysics(self):
         self.vel += self.acc
         self.pos += self.vel
+
+
