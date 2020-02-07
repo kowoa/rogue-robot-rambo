@@ -1,8 +1,11 @@
 import pygame
-from src.entity  import *
+from src.player import *
 from src.physics import *
 
 def main():
+
+
+    player = Player(1, np.array([100, 100]), np.array([0,0]), np.array([0,0]))
 
     pygame.init()
     # Initialize display, icon, background
@@ -82,7 +85,11 @@ def main():
         startTime = 0
         timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), True, (0, 0, 0))
         screen.blit(timerText, (0, 20))
-        screen.blit(playerImg, (100,100))
+
+        player.doKeyState()
+        player.physics.updatePhysics()
+
+        screen.blit(playerImg, (player.pos[0], player.pos[1]))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
 
