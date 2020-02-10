@@ -1,5 +1,5 @@
 import pygame
-import controls
+from src.controls import *
 from src.player import *
 
 def main():
@@ -17,7 +17,7 @@ def main():
 
     # Initialize player object
     playerImg = pygame.image.load("resources/sprites/boss.png")
-    playerImg = pygame.transform.scale(playerImg, (32, 32))
+    playerImg = pygame.transform.scale(playerImg, (64, 64))
     weaponImg = pygame.image.load('resources/sprites/gun.png')
     weaponImg = pygame.transform.scale(weaponImg, (32,32))
 
