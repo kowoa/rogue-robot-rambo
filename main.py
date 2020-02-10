@@ -1,4 +1,5 @@
 import pygame
+import controls
 from src.player import *
 
 def main():
@@ -17,6 +18,8 @@ def main():
     # Initialize player object
     playerImg = pygame.image.load("resources/sprites/boss.png")
     playerImg = pygame.transform.scale(playerImg, (32, 32))
+    weaponImg = pygame.image.load('resources/sprites/gun.png')
+    weaponImg = pygame.transform.scale(weaponImg, (32,32))
 
     # Initialize game clock for tracking FPS and timers
     clock = pygame.time.Clock()
@@ -113,6 +116,7 @@ def main():
         player.updatePhysics()
 
         screen.blit(playerImg, (player.pos[0], player.pos[1]))
+        screen.blit(weaponImg, (player.pos[0], player.pos[1]))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
 
