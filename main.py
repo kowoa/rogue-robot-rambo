@@ -1,5 +1,5 @@
 import pygame
-from src.controls import *
+from src.weapons import *
 from src.player import *
 
 def main():
@@ -18,9 +18,12 @@ def main():
     # Initialize player object
     playerImg = pygame.image.load("resources/sprites/boss.png")
     playerImg = pygame.transform.scale(playerImg, (64, 64))
-    weaponImg = pygame.image.load('resources/sprites/gun.png')
-    weaponImg = pygame.transform.scale(weaponImg, (32,32))
 
+    # Weapon Sprites
+    weaponSprites = pygame.sprite.Group()
+    gun = Gun()
+    weaponSprites.add(gun)
+  
     # Initialize game clock for tracking FPS and timers
     clock = pygame.time.Clock()
 
@@ -100,9 +103,12 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     pause()
+                elif event.key == pygame.K_SPACE:
+                    gun.shoot()
 
+        weaponSprites.update()
         screen.blit(background, (0, 0))
-
+        weaponSprites.draw(screen)
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
         clock.tick(FPS)
         FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
@@ -116,7 +122,6 @@ def main():
         player.updatePhysics()
 
         screen.blit(playerImg, (player.pos[0], player.pos[1]))
-        screen.blit(weaponImg, (player.pos[0], player.pos[1]))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
 
