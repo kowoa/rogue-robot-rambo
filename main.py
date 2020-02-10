@@ -1,6 +1,5 @@
 import pygame
 from src.player import *
-from src.physics import *
 
 def main():
 
@@ -31,6 +30,12 @@ def main():
 
     # Display pause menu later in game loop
     pauseFont = pygame.font.SysFont("monospace", 46)
+
+    # Display start screen before game loop
+    titleFont = pygame.font.SysFont("monospace", 96)
+
+    # Use this font for smaller, generic messages
+    genFont = pygame.font.SysFont("monospace", 24)
 
     # Returns difference between current time and earlier time entered as parameter
     def getTimeElapsed(startTime):
@@ -64,7 +69,25 @@ def main():
             pygame.display.update()
             clock.tick(FPS)
 
-    # Game loop
+    # Display start menu
+    screen.fill((0, 0, 0))
+    startMenu = titleFont.render("PLAY THIS GAME!", True, (255, 255, 255))
+    screen.blit(startMenu, (500, 320))
+    startMenu = genFont.render("Press any button to continue...", True, (255, 255, 255))
+    screen.blit(startMenu, (500, 200))
+    pygame.display.update()
+
+    # Wait for user input before starting game
+    # TODO: Configure this for more options such as showing scoreboard
+    waiting = True
+    while waiting:
+        clock.tick(10)
+        for event in pygame.event.get():
+            # Warning: Capslock counts as keydown
+            if event.type == pygame.KEYDOWN:
+                waiting = False
+
+    # GAME LOOP
     isRunning = True
     while isRunning:
         for event in pygame.event.get():
@@ -79,15 +102,15 @@ def main():
 
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
         clock.tick(FPS)
-        FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), True, (0, 0, 0))
+        FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
         startTime = 0
-        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), True, (0, 0, 0))
+        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), False, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
         player.doKeyState()
-        player.physics.updatePhysics()
+        player.updatePhysics()
 
         screen.blit(playerImg, (player.pos[0], player.pos[1]))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
