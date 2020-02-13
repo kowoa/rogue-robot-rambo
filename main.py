@@ -2,8 +2,12 @@ import pygame
 from src.weapons import *
 from src.player import *
 
+
+weaponSprites = pygame.sprite.Group()
+
 def main():
 
+    global weaponSprites
 
     player = Player(1, np.array([100, 100]), np.array([0,0]), np.array([0,0]))
 
@@ -20,7 +24,6 @@ def main():
     playerImg = pygame.transform.scale(playerImg, (64, 64))
 
     # Weapon Sprites
-    weaponSprites = pygame.sprite.Group()
     gun = Gun()
     weaponSprites.add(gun)
   
@@ -120,7 +123,7 @@ def main():
 
         player.doKeyState()
         player.updateMovement()
-
+        
         screen.blit(playerImg, (player.pos[0], player.pos[1]))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
