@@ -23,4 +23,4 @@ class Player(Entity):
             self.vel[0] = 5
             #self.shoot()
         else:
-            self.vel = np.array([0,0])
+            self.acc = np.array([0,0])
