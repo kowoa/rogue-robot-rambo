@@ -1,4 +1,5 @@
 import pygame
+from src.weapons import *
 from src.player import *
 
 def main():
@@ -16,8 +17,13 @@ def main():
 
     # Initialize player object
     playerImg = pygame.image.load("resources/sprites/boss.png")
-    playerImg = pygame.transform.scale(playerImg, (32, 32))
+    playerImg = pygame.transform.scale(playerImg, (64, 64))
 
+    # Weapon Sprites
+    weaponSprites = pygame.sprite.Group()
+    gun = Gun()
+    weaponSprites.add(gun)
+  
     # Initialize game clock for tracking FPS and timers
     clock = pygame.time.Clock()
 
@@ -97,9 +103,12 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     pause()
+                elif event.key == pygame.K_SPACE:
+                    gun.shoot()
 
+        weaponSprites.update()
         screen.blit(background, (0, 0))
-
+        weaponSprites.draw(screen)
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
         clock.tick(FPS)
         FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
