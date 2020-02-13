@@ -110,7 +110,7 @@ def main():
         screen.blit(timerText, (0, 20))
 
         player.doKeyState()
-        player.updatePhysics()
+        player.updateMovement()
 
         screen.blit(playerImg, (player.pos[0], player.pos[1]))
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
