@@ -1,45 +1,35 @@
-import pygame
+from random import randint
 from src.player import *
+from src.constants import *
+
 
 def main():
-
-
-    player = Player(1, np.array([100, 100]), np.array([0,0]), np.array([0,0]))
-
     pygame.init()
-    # Initialize display, icon, background
-    screen = pygame.display.set_mode((1280, 720))
-    pygame.display.set_caption("Boss Battle")
-    icon = pygame.image.load("resources/sprites/oubliette.png")
-    pygame.display.set_icon(icon)
-    background = pygame.image.load("resources/backgrounds/background1.png")
 
-    # Initialize player object
-    playerImg = pygame.image.load("resources/sprites/boss.png")
-    playerImg = pygame.transform.scale(playerImg, (32, 32))
+    dt = 0
 
-    # Initialize game clock for tracking FPS and timers
+    icon = pygame.image.load(SCREEN_ICON)
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+    player = Player()
+    sprites = pygame.sprite.Group(player)
+    #background = screen.copy()
+    #background.fill((30, 30, 30))
+    #for _ in range (1000):
+    #    x, y = randint(0, 1000), randint(0, 1000)
+    #    pygame.draw.rect(background, pygame.Color("green"), (x, y, 2, 2))
 
-    # Display FPS later in game loop
-    FPS = 30
-    FPSFont = pygame.font.SysFont("monospace", 26)
 
-    # Display timer later in game loop
-    timerFont = pygame.font.SysFont("monospace", 26)
+    background = pygame.image.load("resources/backgrounds/background1.png")
+    pygame.display.set_caption(SCREEN_TITLE)
+    pygame.display.set_icon(icon)
 
-    # Display pause menu later in game loop
-    pauseFont = pygame.font.SysFont("monospace", 46)
 
-    # Display start screen before game loop
-    titleFont = pygame.font.SysFont("monospace", 96)
-
-    # Use this font for smaller, generic messages
-    genFont = pygame.font.SysFont("monospace", 24)
 
     # Returns difference between current time and earlier time entered as parameter
     def getTimeElapsed(startTime):
         return pygame.time.get_ticks() - startTime
+    
 
     # Display and undisplay pause menu
     def pause():
@@ -60,10 +50,10 @@ def main():
                         quit()
             # Displays Pause menu
             screen.fill((255, 255, 255))
-            pauseMenu = pauseFont.render("Paused", True, (0, 0, 200))
+            pauseMenu = FONT_LARGE.render("Paused", True, (0, 0, 200))
             screen.blit(pauseMenu, (500, 320))
 
-            optionsMenu = pauseFont.render("Press C to Continue or Q to Quit", True, (0, 0, 200))
+            optionsMenu = FONT_MEDIUM.render("Press C to Continue or Q to Quit", True, (0, 0, 200))
             screen.blit(optionsMenu, (200, 440))
 
             pygame.display.update()
@@ -71,9 +61,9 @@ def main():
 
     # Display start menu
     screen.fill((0, 0, 0))
-    startMenu = titleFont.render("PLAY THIS GAME!", True, (255, 255, 255))
+    startMenu = FONT_LARGE.render("PLAY THIS GAME!", True, (255, 255, 255))
     screen.blit(startMenu, (500, 320))
-    startMenu = genFont.render("Press any button to continue...", True, (255, 255, 255))
+    startMenu = FONT_SMALL.render("Press any button to continue...", True, (255, 255, 255))
     screen.blit(startMenu, (500, 200))
     pygame.display.update()
 
@@ -88,34 +78,33 @@ def main():
                 waiting = False
 
     # GAME LOOP
-    isRunning = True
-    while isRunning:
-        for event in pygame.event.get():
+    running = True
+    while running:
+        events = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
-                isRunning = False
+                running = False
             # Calls pause function when the key P is pressed.
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     pause()
 
         screen.blit(background, (0, 0))
+        sprites.update(events, dt)
+        sprites.draw(screen)
 
         # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
-        clock.tick(FPS)
-        FPSText = FPSFont.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
+        dt = clock.tick(FPS)
+        FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
         startTime = 0
-        timerText = timerFont.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), False, (0, 0, 0))
+        timerText = FONT_SMALL.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), False, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
-        player.doKeyState()
-        player.updateMovement()
-
-        screen.blit(playerImg, (player.pos[0], player.pos[1]))
+        #pymunk.space.Space.step(1/FPS)
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
-
 
 if __name__ == "__main__":
     main()
