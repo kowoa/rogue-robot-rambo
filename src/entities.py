@@ -17,3 +17,6 @@ class Player(pygame.sprite.Sprite):
         if move.length() > 0: move.normalize_ip()
         self.pos += move * (dt/5)
         self.rect.center = self.pos
+
+class Bullets(pygame.sprite.Sprite):
+    def __init__(self):

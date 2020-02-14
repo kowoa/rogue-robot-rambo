@@ -1,5 +1,5 @@
 from random import randint
-from src.player import *
+from src.entities import *
 from src.constants import *
 
 
@@ -13,18 +13,10 @@ def main():
     clock = pygame.time.Clock()
     player = Player()
     sprites = pygame.sprite.Group(player)
-    #background = screen.copy()
-    #background.fill((30, 30, 30))
-    #for _ in range (1000):
-    #    x, y = randint(0, 1000), randint(0, 1000)
-    #    pygame.draw.rect(background, pygame.Color("green"), (x, y, 2, 2))
-
 
     background = pygame.image.load("resources/backgrounds/background1.png")
     pygame.display.set_caption(SCREEN_TITLE)
     pygame.display.set_icon(icon)
-
-
 
     # Returns difference between current time and earlier time entered as parameter
     def getTimeElapsed(startTime):
