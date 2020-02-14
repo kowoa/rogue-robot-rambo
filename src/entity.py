@@ -1,5 +1,5 @@
-from pygame.math import *
 import numpy as np
+import pymunk
 
 # Entity has physics
 class Entity():

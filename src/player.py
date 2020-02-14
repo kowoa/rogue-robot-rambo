@@ -1,26 +1,19 @@
-from src.entity import *
 import pygame
 
-class Player(Entity):
-    def __init__(self, mass, pos, vel, acc):
-        Entity.__init__(self, mass, pos, vel, acc)
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("resources/sprites/boss.png")
+        self.rect = self.image.get_rect()
+        self.pos = pygame.Vector2((100, 200))
 
-
-    def doKeyState(self):
-        keystate = pygame.key.get_pressed()
-
-        if keystate[pygame.K_UP] or keystate[pygame.K_w]:
-            self.vel[1] = -5
-            #self.shoot()
-        elif keystate[pygame.K_DOWN] or keystate[pygame.K_s]:
-            self.vel[1] = 5
-            #self.shoot()
-
-        elif keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
-            self.vel[0] = -5
-            #self.shoot()
-        elif keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
-            self.vel[0] = 5
-            #self.shoot()
-        else:
-            self.acc = np.array([0,0])
+    def update(self, events, dt):
+        pressed = pygame.key.get_pressed()
+        move = pygame.Vector2((0, 0))
+        if pressed[pygame.K_w]: move += (0, -1)
+        if pressed[pygame.K_a]: move += (-1, 0)
+        if pressed[pygame.K_s]: move += (0, 1)
+        if pressed[pygame.K_d]: move += (1, 0)
+        if move.length() > 0: move.normalize_ip()
+        self.pos += move * (dt/5)
+        self.rect.center = self.pos
