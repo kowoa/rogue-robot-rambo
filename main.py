@@ -2,7 +2,6 @@ from random import randint
 from src.entities import *
 from src.constants import *
 
-    global weaponSprites
 
 def main():
     pygame.init()
