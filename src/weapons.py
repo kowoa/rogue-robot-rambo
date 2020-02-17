@@ -1,10 +1,11 @@
-import pygame
+import pygame, src.entity
+
 
 width = 1280
 height = 720
 
-class Gun(pygame.sprite.Sprite):
-    def __init__(self):
+class Gun(Entity):
+    def __init__(self, size = int(), mass=int(), pos=np.array([0, 0]), vel=np.array([0, 0]), acc=np.array([0, 0]), sprite = sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('resources/sprites/desert_hawk.png')
         self.image = pygame.transform.scale(self.image, (32,32))
