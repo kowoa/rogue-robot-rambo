@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("resources/sprites/newBoss.png")
+        self.image = pygame.image.load("resources/sprites/boss.png")
         self.rect = self.image.get_rect()
         self.pos = pygame.Vector2((100, 200))
 
@@ -18,3 +18,5 @@ class Player(pygame.sprite.Sprite):
         self.pos += move * (dt/5)
         self.rect.center = self.pos
 
+class Bullets(pygame.sprite.Sprite):
+    def __init__(self):
