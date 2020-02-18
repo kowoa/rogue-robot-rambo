@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("resources/sprites/boss.png")
+        self.image = pygame.image.load("resources/sprites/newBoss.png")
         self.rect = self.image.get_rect()
         self.pos = pygame.Vector2((100, 200))
 
