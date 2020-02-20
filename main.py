@@ -1,30 +1,22 @@
 from random import randint
-from src.player import *
+from src.entities import *
 from src.constants import *
 
 
 def main():
     pygame.init()
 
-    dt = 0
-
     icon = pygame.image.load(SCREEN_ICON)
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+    gun = Gun()
     player = Player()
-    sprites = pygame.sprite.Group(player)
-    #background = screen.copy()
-    #background.fill((30, 30, 30))
-    #for _ in range (1000):
-    #    x, y = randint(0, 1000), randint(0, 1000)
-    #    pygame.draw.rect(background, pygame.Color("green"), (x, y, 2, 2))
+    sprites = pygame.sprite.Group(player, gun)
 
-
-    background = pygame.image.load("resources/backgrounds/background1.png")
+    # TODO: Replace background with something low resolution to improve FPS
+    #background = pygame.image.load("resources/backgrounds/background1.png")
     pygame.display.set_caption(SCREEN_TITLE)
     pygame.display.set_icon(icon)
-
-
 
     # Returns difference between current time and earlier time entered as parameter
     def getTimeElapsed(startTime):
@@ -89,12 +81,14 @@ def main():
                 if event.key == pygame.K_p:
                     pause()
 
-        screen.blit(background, (0, 0))
-        sprites.update(events, dt)
+        # Time step for movement and physics
+        dt = clock.tick(FPS)
+
+        screen.fill((255, 255, 255))
+        #screen.blit(background, (0, 0))
+        sprites.update(dt)
         sprites.draw(screen)
 
-        # If there is any jittering, replace this with 'clock.tick_busy_loop(FPS)'
-        dt = clock.tick(FPS)
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
 
@@ -102,9 +96,10 @@ def main():
         timerText = FONT_SMALL.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), False, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
-        #pymunk.space.Space.step(1/FPS)
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
         pygame.display.update()
+
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
