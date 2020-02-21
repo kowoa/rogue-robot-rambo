@@ -2,16 +2,17 @@ from random import randint
 from src.entities import *
 from src.constants import *
 
-
 def main():
+    global playerSprites, bulletSprites
     pygame.init()
 
     icon = pygame.image.load(SCREEN_ICON)
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    gun = Gun()
+
     player = Player()
-    sprites = pygame.sprite.Group(player, gun)
+    gun = Gun()
+    playerSprites.add(player, gun)
 
     # TODO: Replace background with something low resolution to improve FPS
     #background = pygame.image.load("resources/backgrounds/background1.png")
@@ -86,8 +87,10 @@ def main():
 
         screen.fill((255, 255, 255))
         #screen.blit(background, (0, 0))
-        sprites.update(dt)
-        sprites.draw(screen)
+
+        player.move(dt)
+        gun.move(dt, player.rect.x, player.rect.y)
+        playerSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
