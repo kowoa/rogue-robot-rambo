@@ -1,9 +1,8 @@
-import pygame
 from src.constants import *
 
-playerSprites = pygame.sprite.Group()
+charSprites = pygame.sprite.Group()
+itemSprites = pygame.sprite.Group()
 bulletSprites = pygame.sprite.Group()
-enemySprites = pygame.sprite.Group()
 
 class Player(pygame.sprite.Sprite):
     # Takes gun sprite parameter
@@ -14,10 +13,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = SCREEN_WIDTH / 2
         self.rect.y = SCREEN_HEIGHT / 2
 
-    def move(self, dt):
+    def update(self, dt):
         pressed = pygame.key.get_pressed()
         # dt is current FPS; movement updates every FPS/dividend frames; change dividend to change base movement speed
-        move = dt / 5
+        move = dt / 3
 
         # Handles player movement (WASD)
         if pressed[pygame.K_w]:
@@ -60,7 +59,7 @@ class Gun(pygame.sprite.Sprite):
             self.lastShotTime = currentTime
 
 
-    def move(self, dt, playerX, playerY):
+    def update(self, dt, playerX, playerY):
         pressed = pygame.key.get_pressed()
         # dt is current FPS; movement updates every FPS/dividend frames; change dividend to change base movement speed
         move = dt / 5
@@ -100,6 +99,7 @@ class Gun(pygame.sprite.Sprite):
         if self.pos[0] + self.pos[1] != 0:
             pygame.Vector2.normalize_ip(self.pos)
 
+        # Yeah just do it mate
         self.shoot()
 
         # Adjust num in (self.pos[i] * num) for distance from player
@@ -125,7 +125,7 @@ class Bullet(pygame.sprite.Sprite):
         self.numBounces = 0
 
 
-    def move(self, dt):
+    def update(self, dt):
         move = dt / 2
 
         # Hit top and bottom borders
@@ -156,13 +156,15 @@ class Enemy(pygame.sprite.Sprite):
         self.shootDelay = 500
         self.lastShotTime = pygame.time.get_ticks()
 
-    def move(self, dt):
+    def update(self, dt):
         move = dt / 5
 
         if self.rect.y > -move or self.rect.y < SCREEN_HEIGHT - self.rect.height + move:
             self.rect.move_ip(0, self.velY * move)
         if self.rect.y <= -move or self.rect.y >= SCREEN_HEIGHT - self.rect.height + move:
             self.velY *= -1
+
+        self.attack()
 
     def attack(self):
         currentTime = pygame.time.get_ticks()

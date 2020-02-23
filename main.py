@@ -13,8 +13,9 @@ def main():
     player = Player()
     gun = Gun()
     enemy = Enemy()
-    playerSprites.add(player, gun)
-    enemySprites.add(enemy)
+
+    charSprites.add(player, enemy)
+    itemSprites.add(gun)
 
     # TODO: Replace background with something low resolution to improve FPS
     #background = pygame.image.load("resources/backgrounds/background1.png")
@@ -90,14 +91,13 @@ def main():
         screen.fill((255, 255, 255))
         #screen.blit(background, (0, 0))
 
-        player.move(dt)
-        gun.move(dt, player.rect.x, player.rect.y)
-        enemy.move(dt)
-        enemy.attack()
-        for bullet in bulletSprites:
-            bullet.move(dt)
-        playerSprites.draw(screen)
-        enemySprites.draw(screen)
+        player.update(dt)
+        gun.update(dt, player.rect.x, player.rect.y)
+        enemy.update(dt)
+        bulletSprites.update(dt)
+
+        charSprites.draw(screen)
+        itemSprites.draw(screen)
         bulletSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
