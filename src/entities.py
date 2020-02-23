@@ -3,6 +3,7 @@ from src.constants import *
 
 playerSprites = pygame.sprite.Group()
 bulletSprites = pygame.sprite.Group()
+enemySprites = pygame.sprite.Group()
 
 class Player(pygame.sprite.Sprite):
     # Takes gun sprite parameter
@@ -37,13 +38,14 @@ class Gun(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("resources/sprites/desert_hawk.png")
         self.image = pygame.transform.scale(self.image, (32, 32))
-        self.image.set_colorkey((0, 0, 0))
+        self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
         # Position relative to player (NOT the actual coordinate position of gun); used as direction
-        self.pos = pygame.Vector2(1, 1)
+        self.pos = pygame.Vector2(-1, 0)
 
-        self.rightImage = self.image
-        self.leftImage = pygame.transform.flip(self.image, 1, 0)
+        # Rotating images by angles not divisible by 90 auto-pads image; avoid using rotate
+        self.imageEast = self.image
+        self.imageWest = pygame.transform.flip(self.image, 1, 0)
 
         self.shootDelay = 200
         self.lastShotTime = pygame.time.get_ticks()
@@ -51,7 +53,8 @@ class Gun(pygame.sprite.Sprite):
     def shoot(self):
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
-        if pressed[pygame.K_SPACE] and currentTime - self.lastShotTime > self.shootDelay:
+        if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT])\
+                and currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, self.pos)
             bulletSprites.add(bullet)
             self.lastShotTime = currentTime
@@ -70,14 +73,14 @@ class Gun(pygame.sprite.Sprite):
             if pressed[pygame.K_a]:
                 self.rect.move_ip(-move, 0)
                 self.pos += (-1, 0)
-                self.image = self.leftImage
+                self.image = self.imageWest
             if pressed[pygame.K_s]:
                 self.rect.move_ip(0, move)
                 self.pos += (0, 1)
             if pressed[pygame.K_d]:
                 self.rect.move_ip(move, 0)
                 self.pos += (1, 0)
-                self.image = self.rightImage
+                self.image = self.imageEast
 
         # Moves gun when aiming (Arrow keys)
         if pressed[pygame.K_UP]:
@@ -85,16 +88,17 @@ class Gun(pygame.sprite.Sprite):
         if pressed[pygame.K_LEFT]:
             self.pos += (-1, 0)
             if not pressed[pygame.K_RIGHT]:
-                self.image = self.leftImage
+                self.image = self.imageWest
         if pressed[pygame.K_DOWN]:
             self.pos += (0, 1)
         if pressed[pygame.K_RIGHT]:
             self.pos += (1, 0)
             if not pressed[pygame.K_LEFT]:
-                self.image = self.rightImage
+                self.image = self.imageEast
 
         # Normalization ensures consistent movement
-        pygame.Vector2.normalize_ip(self.pos)
+        if self.pos[0] + self.pos[1] != 0:
+            pygame.Vector2.normalize_ip(self.pos)
 
         self.shoot()
 
@@ -118,10 +122,51 @@ class Bullet(pygame.sprite.Sprite):
         self.dirX = direction[0]
         self.dirY = direction[1]
 
+        self.numBounces = 0
+
+
+    def move(self, dt):
+        move = dt / 2
+
+        # Hit top and bottom borders
+        if self.rect.y <= -move or self.rect.y >= SCREEN_HEIGHT - self.rect.height + move:
+            self.dirY *= -1
+            self.numBounces += 1
+        # Hit left and right borders
+        if self.rect.x <= -move or self.rect.x >= SCREEN_WIDTH - self.rect.width + move:
+            self.dirX *= -1
+            self.numBounces += 1
+
+        if self.numBounces == 4:
+            self.kill()
+
+        self.rect.move_ip(self.dirX * move, self.dirY * move)
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("resources/sprites/aiPlayer.png")
+        self.image = pygame.transform.scale(self.image, (32, 32))
+        self.rect = self.image.get_rect()
+        self.rect.x = 20
+        self.rect.y = SCREEN_HEIGHT / 2
+
+        self.velY = -1
+
+        self.shootDelay = 500
+        self.lastShotTime = pygame.time.get_ticks()
 
     def move(self, dt):
         move = dt / 5
-        velX = self.dirX * move
-        velY = self.dirY * move
 
-        self.rect.move_ip(velX, velY)
+        if self.rect.y > -move or self.rect.y < SCREEN_HEIGHT - self.rect.height + move:
+            self.rect.move_ip(0, self.velY * move)
+        if self.rect.y <= -move or self.rect.y >= SCREEN_HEIGHT - self.rect.height + move:
+            self.velY *= -1
+
+    def attack(self):
+        currentTime = pygame.time.get_ticks()
+        if currentTime - self.lastShotTime > self.shootDelay:
+            bullet = Bullet(self.rect.x, self.rect.y, (1, 0))
+            bulletSprites.add(bullet)
+            self.lastShotTime = currentTime
