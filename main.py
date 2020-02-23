@@ -90,7 +90,10 @@ def main():
 
         player.move(dt)
         gun.move(dt, player.rect.x, player.rect.y)
+        for bullet in bulletSprites:
+            bullet.move(dt)
         playerSprites.draw(screen)
+        bulletSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))

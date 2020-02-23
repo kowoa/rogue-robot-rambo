@@ -39,15 +39,22 @@ class Gun(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (32, 32))
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
+        # Position relative to player (NOT the actual coordinate position of gun); used as direction
         self.pos = pygame.Vector2(1, 1)
 
         self.rightImage = self.image
         self.leftImage = pygame.transform.flip(self.image, 1, 0)
 
+        self.shootDelay = 200
+        self.lastShotTime = pygame.time.get_ticks()
+
     def shoot(self):
         pressed = pygame.key.get_pressed()
-        bullet = Bullet(self.rect.x, self.rect.y)
-        bulletSprites.add(bullet)
+        currentTime = pygame.time.get_ticks()
+        if pressed[pygame.K_SPACE] and currentTime - self.lastShotTime > self.shootDelay:
+            bullet = Bullet(self.rect.x, self.rect.y, self.pos)
+            bulletSprites.add(bullet)
+            self.lastShotTime = currentTime
 
 
     def move(self, dt, playerX, playerY):
@@ -77,36 +84,44 @@ class Gun(pygame.sprite.Sprite):
             self.pos += (0, -1)
         if pressed[pygame.K_LEFT]:
             self.pos += (-1, 0)
-            self.image = self.leftImage
+            if not pressed[pygame.K_RIGHT]:
+                self.image = self.leftImage
         if pressed[pygame.K_DOWN]:
             self.pos += (0, 1)
         if pressed[pygame.K_RIGHT]:
             self.pos += (1, 0)
-            self.image = self.rightImage
+            if not pressed[pygame.K_LEFT]:
+                self.image = self.rightImage
 
         # Normalization ensures consistent movement
         pygame.Vector2.normalize_ip(self.pos)
+
+        self.shoot()
 
         # Adjust num in (self.pos[i] * num) for distance from player
         self.rect.x = playerX + (self.pos[0] * 50)
         self.rect.y = playerY + (self.pos[1] * 50)
 
+
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, initX, initY):
+    # Reminder that Python passes by object reference; when 'direction' changes in class Gun(),
+    # the value in class Bullet() changes as well
+
+    # Constructor take parameters initial x and y position to spawn and direction to shoot (used in Gun.shoot())
+    def __init__(self, initX, initY, direction):
         super().__init__()
-        self.image = pygame.image.load("resources/sprites/bulletStrip.png")
+        self.image = pygame.image.load("resources/sprites/newBoss.png")
         self.rect = self.image.get_rect()
         self.rect.x = initX
         self.rect.y = initY
+        # Force pass by value by making two separate variables to store X and Y direction
+        self.dirX = direction[0]
+        self.dirY = direction[1]
 
-    # Takes parameter pos from gun to determine direction of motion
-    def fly(self, dt, initPos):
-        # Speed of bullet
+
+    def move(self, dt):
         move = dt / 5
+        velX = self.dirX * move
+        velY = self.dirY * move
 
-        # Kill bullet if touches boundary
-        if self.rect.x <= -move or self.rect.x >= SCREEN_WIDTH + move \
-                or self.rect.y <= -move or self.rect.y >= SCREEN_HEIGHT + move:
-            self.rect.move_ip(initPos[0] * move, initPos[1] * move)
-        else:
-            self.kill()
+        self.rect.move_ip(velX, velY)
