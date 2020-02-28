@@ -142,6 +142,7 @@ class Bullet(pygame.sprite.Sprite):
 
         self.rect.move_ip(self.dirX * move, self.dirY * move)
 
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()

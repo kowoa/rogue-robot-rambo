@@ -1,4 +1,5 @@
 from random import randint
+import pygame
 from src.entities import *
 from src.constants import *
 
