@@ -6,7 +6,7 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 SCREEN_TITLE = "Boss Battle!"
 SCREEN_ICON = "resources/sprites/oubliette.png"
-FPS = 60
+FPS = 30
 
 # Fonts
 FONT_SMALL = pygame.font.SysFont("monospace", 24)

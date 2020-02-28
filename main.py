@@ -85,12 +85,16 @@ def main():
                     pause()
 
         # Time step for movement and physics
-        dt = clock.tick(FPS)
+        dt = clock.tick_busy_loop(FPS)
 
         screen.fill((255, 255, 255))
         #screen.blit(background, (0, 0))
 
+        player.applyGravity(0.01, 10, dt)
         player.move(dt)
+
+
+
         gun.move(dt, player.rect.x, player.rect.y)
         enemy.move(dt)
         enemy.attack()
