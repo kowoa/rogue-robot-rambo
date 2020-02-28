@@ -23,10 +23,6 @@ class Player(pygame.sprite.Sprite):
     player_status = False
 
 
-
-
-
-
     def setStatus(self, status):
         player_status = status
 
@@ -60,6 +56,8 @@ class Player(pygame.sprite.Sprite):
         if pressed[pygame.K_d]:
             if self.rect.x < SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(move, 0)
             if self.rect.x >= SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(-move, 0)
+        if pressed[pygame.K_SPACE]:
+            self.acc.y += -0.01
 
 
 class Gun(pygame.sprite.Sprite):
