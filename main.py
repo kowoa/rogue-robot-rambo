@@ -1,6 +1,7 @@
 from random import randint
 from src.entities import *
 from src.constants import *
+from src.barriers import *
 
 def main():
     global playerSprites, bulletSprites, enemySprites
@@ -13,8 +14,10 @@ def main():
     player = Player()
     gun = Gun()
     enemy = Enemy()
+    barrier = Obstacles()
     playerSprites.add(player, gun)
     enemySprites.add(enemy)
+    barrierSprites.add(barrier)
 
     # TODO: Replace background with something low resolution to improve FPS
     #background = pygame.image.load("resources/backgrounds/background1.png")
@@ -25,6 +28,27 @@ def main():
     def getTimeElapsed(startTime):
         return pygame.time.get_ticks() - startTime
     
+    # Displays the scoreboard
+    def score():
+        scoring = True
+
+        # Loop for scoreboard
+        while scoring:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                # Option to continue in scoreboard
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_c:
+                        scoring = False
+
+            screen.fill((105, 105, 105))
+            scoreBoard = FONT_LARGE.render("Scoreboard", True,  (200, 0, 0))
+            screen.blit(scoreBoard, (500, 60))
+
+            pygame.display.update()
+            clock.tick(FPS)
 
     # Display and undisplay pause menu
     def pause():
@@ -83,6 +107,8 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p:
                     pause()
+                elif event.key == pygame.K_m:
+                    score()
 
         # Time step for movement and physics
         dt = clock.tick(FPS)
@@ -99,6 +125,7 @@ def main():
         playerSprites.draw(screen)
         enemySprites.draw(screen)
         bulletSprites.draw(screen)
+        barrierSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
