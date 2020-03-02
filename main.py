@@ -1,4 +1,3 @@
-from random import randint
 from src.entities import *
 from src.constants import *
 from src.barriers import *
@@ -14,10 +13,9 @@ def main():
     player = Player()
     gun = Gun()
     enemy = Enemy()
-    barrier = Obstacles()
-    playerSprites.add(player, gun)
-    enemySprites.add(enemy)
-    barrierSprites.add(barrier)
+
+    charSprites.add(player, enemy)
+    itemSprites.add(gun)
 
     # TODO: Replace background with something low resolution to improve FPS
     #background = pygame.image.load("resources/backgrounds/background1.png")
@@ -111,19 +109,19 @@ def main():
                     score()
 
         # Time step for movement and physics
-        dt = clock.tick(FPS)
+        dt = clock.tick_busy_loop(FPS)
 
         screen.fill((255, 255, 255))
         #screen.blit(background, (0, 0))
 
-        player.move(dt)
-        gun.move(dt, player.rect.x, player.rect.y)
-        enemy.move(dt)
-        enemy.attack()
-        for bullet in bulletSprites:
-            bullet.move(dt)
-        playerSprites.draw(screen)
-        enemySprites.draw(screen)
+        player.update(dt)
+        gun.update(dt, player.rect.x, player.rect.y)
+        enemy.update(dt)
+        bulletSprites.update(dt)
+
+        charSprites.draw(screen)
+        itemSprites.draw(screen)
+
         bulletSprites.draw(screen)
         barrierSprites.draw(screen)
 

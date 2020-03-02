@@ -1,12 +1,12 @@
-import pygame
 from src.constants import *
 
-playerSprites = pygame.sprite.Group()
+charSprites = pygame.sprite.Group()
+itemSprites = pygame.sprite.Group()
 bulletSprites = pygame.sprite.Group()
-enemySprites = pygame.sprite.Group()
+platformSprites = pygame.sprite.Group()
+
 
 class Player(pygame.sprite.Sprite):
-    # Takes gun sprite parameter
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("resources/sprites/newBoss.png")
@@ -14,24 +14,64 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = SCREEN_WIDTH / 2
         self.rect.y = SCREEN_HEIGHT / 2
 
-    def move(self, dt):
+        self.deathCount = 0
+        self.player_status = False
+
+        self.accGravity = 0.5
+        self.velGravity = 0
+
+        self.pressedJump = False
+        self.velJump = 30
+
+
+    def setStatus(self, status):
+        self.player_status = status
+
+    def isDead(self):
+        if self.player_status == True:
+            self.deathCount += 1
+
+    def queryDeathCount(self):
+        return self.deathCount
+
+
+
+    def update(self, dt):
         pressed = pygame.key.get_pressed()
         # dt is current FPS; movement updates every FPS/dividend frames; change dividend to change base movement speed
-        move = dt / 5
+        move = dt / 3
 
         # Handles player movement (WASD)
-        if pressed[pygame.K_w]:
-            if self.rect.y > -move: self.rect.move_ip(0, -move)
-            if self.rect.y <= -move: self.rect.move_ip(0, move)
+        if pressed[pygame.K_w] and not self.pressedJump:
+            self.pressedJump = True
         if pressed[pygame.K_a]:
             if self.rect.x > -move: self.rect.move_ip(-move, 0)
-            if self.rect.x <= -move: self.rect.move_ip(move, 0)
         if pressed[pygame.K_s]:
             if self.rect.y < SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, move)
-            if self.rect.y >= SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, -move)
         if pressed[pygame.K_d]:
             if self.rect.x < SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(move, 0)
-            if self.rect.x >= SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(-move, 0)
+
+        # Jump with W
+        if self.pressedJump:
+            self.rect.move_ip(0, -self.velJump)
+            self.velJump -= self.accGravity
+
+        # Applies gravity
+        if self.rect.y < SCREEN_HEIGHT - self.rect.height - self.velGravity:
+            self.rect.move_ip(0, self.velGravity)
+            self.velGravity += self.accGravity
+        else:
+            # Contact with ground
+            self.velGravity = 0
+            self.pressedJump = False
+            self.velJump = 30
+
+        # Border collision
+        if self.rect.y <= -move: self.rect.move_ip(0, move)
+        if self.rect.x <= -move: self.rect.move_ip(move, 0)
+        if self.rect.y >= SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, -move)
+        if self.rect.x >= SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(-move, 0)
+
 
 class Gun(pygame.sprite.Sprite):
     def __init__(self):
@@ -53,20 +93,21 @@ class Gun(pygame.sprite.Sprite):
     def shoot(self):
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
-        if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT])\
+        if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
                 and currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, self.pos)
             bulletSprites.add(bullet)
             self.lastShotTime = currentTime
 
 
-    def move(self, dt, playerX, playerY):
+    def update(self, dt, playerX, playerY):
         pressed = pygame.key.get_pressed()
         # dt is current FPS; movement updates every FPS/dividend frames; change dividend to change base movement speed
         move = dt / 5
 
         # Moves gun with player (WASD)
-        if not pressed[pygame.K_UP] and not pressed[pygame.K_LEFT] and not pressed[pygame.K_DOWN] and not pressed[pygame.K_RIGHT]:
+        if not pressed[pygame.K_UP] and not pressed[pygame.K_LEFT] and not pressed[pygame.K_DOWN] and not pressed[
+            pygame.K_RIGHT]:
             if pressed[pygame.K_w]:
                 self.rect.move_ip(0, -move)
                 self.pos += (0, -1)
@@ -96,10 +137,14 @@ class Gun(pygame.sprite.Sprite):
             if not pressed[pygame.K_LEFT]:
                 self.image = self.imageEast
 
-        # Normalization ensures consistent movement
-        if self.pos[0] + self.pos[1] != 0:
-            pygame.Vector2.normalize_ip(self.pos)
+        # Prevents divide zero normalization error and gun flying off bug
+        if self.pos[0] + self.pos[1] == 0:
+            self.pos += (1, 1)
 
+        # Normalization ensures consistent movement
+        pygame.Vector2.normalize_ip(self.pos)
+
+        # Yeah just do it mate
         self.shoot()
 
         # Adjust num in (self.pos[i] * num) for distance from player
@@ -109,9 +154,10 @@ class Gun(pygame.sprite.Sprite):
 
 class Bullet(pygame.sprite.Sprite):
     # Reminder that Python passes by object reference; when 'direction' changes in class Gun(),
-    # the value in class Bullet() changes as well
+    # the value in class Bullet() changes as well, changing direction of all bullets;
+    # prevent this by making separate variables dirX and dirY
 
-    # Constructor take parameters initial x and y position to spawn and direction to shoot (used in Gun.shoot())
+    # Constructor take parameters x and y position to spawn at; determines direction to shoot (used in Gun.shoot())
     def __init__(self, initX, initY, direction):
         super().__init__()
         self.image = pygame.image.load("resources/sprites/newBoss.png")
@@ -125,7 +171,7 @@ class Bullet(pygame.sprite.Sprite):
         self.numBounces = 0
 
 
-    def move(self, dt):
+    def update(self, dt):
         move = dt / 2
 
         # Hit top and bottom borders
@@ -137,10 +183,11 @@ class Bullet(pygame.sprite.Sprite):
             self.dirX *= -1
             self.numBounces += 1
 
-        if self.numBounces == 4:
+        if self.numBounces == 2:
             self.kill()
 
         self.rect.move_ip(self.dirX * move, self.dirY * move)
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
@@ -156,7 +203,7 @@ class Enemy(pygame.sprite.Sprite):
         self.shootDelay = 500
         self.lastShotTime = pygame.time.get_ticks()
 
-    def move(self, dt):
+    def update(self, dt):
         move = dt / 5
 
         if self.rect.y > -move or self.rect.y < SCREEN_HEIGHT - self.rect.height + move:
@@ -164,9 +211,15 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.y <= -move or self.rect.y >= SCREEN_HEIGHT - self.rect.height + move:
             self.velY *= -1
 
+        self.attack()
+
     def attack(self):
         currentTime = pygame.time.get_ticks()
         if currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, (1, 0))
             bulletSprites.add(bullet)
             self.lastShotTime = currentTime
+
+class Platform(pygame.sprite.Sprite):
+    def __init__(self):
+        self.image = pygame.image.load("resources/sprites/blockade.png")
