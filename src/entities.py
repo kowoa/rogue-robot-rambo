@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.velGravity = 0
 
         self.pressedJump = False
-        self.jumpSpeed = 30
+        self.velJump = 30
 
 
     def setStatus(self, status):
@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
         move = dt / 3
 
         # Handles player movement (WASD)
-        if pressed[pygame.K_w] and self.pressedJump == False:
+        if pressed[pygame.K_w] and not self.pressedJump:
             self.pressedJump = True
         if pressed[pygame.K_a]:
             if self.rect.x > -move: self.rect.move_ip(-move, 0)
@@ -52,9 +52,9 @@ class Player(pygame.sprite.Sprite):
             if self.rect.x < SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(move, 0)
 
         # Jump with W
-        if self.pressedJump == True:
-            self.rect.move_ip(0, -self.jumpSpeed)
-            self.jumpSpeed -= self.accGravity
+        if self.pressedJump:
+            self.rect.move_ip(0, -self.velJump)
+            self.velJump -= self.accGravity
 
         # Applies gravity
         if self.rect.y < SCREEN_HEIGHT - self.rect.height - self.velGravity:
@@ -64,8 +64,9 @@ class Player(pygame.sprite.Sprite):
             # Contact with ground
             self.velGravity = 0
             self.pressedJump = False
-            self.jumpSpeed = 30
+            self.velJump = 30
 
+        # Border collision
         if self.rect.y <= -move: self.rect.move_ip(0, move)
         if self.rect.x <= -move: self.rect.move_ip(move, 0)
         if self.rect.y >= SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, -move)
