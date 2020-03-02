@@ -1,8 +1,10 @@
 from src.constants import *
+import math
 
 charSprites = pygame.sprite.Group()
 itemSprites = pygame.sprite.Group()
 bulletSprites = pygame.sprite.Group()
+
 
 class Player(pygame.sprite.Sprite):
     # Takes gun sprite parameter
@@ -12,6 +14,28 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH / 2
         self.rect.y = SCREEN_HEIGHT / 2
+
+        self.vel = pygame.Vector2()
+        self.acc = pygame.Vector2()
+
+        self.deathCount = 0
+        self.player_status = False
+
+
+    def setStatus(self, status):
+        self.player_status = status
+
+    def isDead(self):
+        if self.player_status == True:
+            self.deathCount += 1
+
+    def queryDeathCount(self):
+        return self.deathCount
+
+    def applyGravity(self, a, scale=1, dt=1):
+        self.acc.y = a
+        self.vel.y += self.acc.y
+        self.rect.y += self.vel.y + 0.5 * self.acc.y
 
     def update(self, dt):
         pressed = pygame.key.get_pressed()
@@ -31,6 +55,9 @@ class Player(pygame.sprite.Sprite):
         if pressed[pygame.K_d]:
             if self.rect.x < SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(move, 0)
             if self.rect.x >= SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(-move, 0)
+        if pressed[pygame.K_SPACE]:
+            self.acc.y += -0.01
+
 
 class Gun(pygame.sprite.Sprite):
     def __init__(self):
@@ -52,7 +79,7 @@ class Gun(pygame.sprite.Sprite):
     def shoot(self):
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
-        if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT])\
+        if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
                 and currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, self.pos)
             bulletSprites.add(bullet)
@@ -65,7 +92,8 @@ class Gun(pygame.sprite.Sprite):
         move = dt / 5
 
         # Moves gun with player (WASD)
-        if not pressed[pygame.K_UP] and not pressed[pygame.K_LEFT] and not pressed[pygame.K_DOWN] and not pressed[pygame.K_RIGHT]:
+        if not pressed[pygame.K_UP] and not pressed[pygame.K_LEFT] and not pressed[pygame.K_DOWN] and not pressed[
+            pygame.K_RIGHT]:
             if pressed[pygame.K_w]:
                 self.rect.move_ip(0, -move)
                 self.pos += (0, -1)
@@ -141,6 +169,7 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
         self.rect.move_ip(self.dirX * move, self.dirY * move)
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):

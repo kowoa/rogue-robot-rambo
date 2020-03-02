@@ -86,7 +86,7 @@ def main():
                     pause()
 
         # Time step for movement and physics
-        dt = clock.tick(FPS)
+        dt = clock.tick_busy_loop(FPS)
 
         screen.fill((255, 255, 255))
         #screen.blit(background, (0, 0))
@@ -98,6 +98,8 @@ def main():
 
         charSprites.draw(screen)
         itemSprites.draw(screen)
+        player.applyGravity(0.01, 10, dt)
+
         bulletSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
