@@ -1,13 +1,12 @@
 from src.constants import *
-import math
 
 charSprites = pygame.sprite.Group()
 itemSprites = pygame.sprite.Group()
 bulletSprites = pygame.sprite.Group()
+platformSprites = pygame.sprite.Group()
 
 
 class Player(pygame.sprite.Sprite):
-    # Takes gun sprite parameter
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("resources/sprites/newBoss.png")
@@ -15,11 +14,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = SCREEN_WIDTH / 2
         self.rect.y = SCREEN_HEIGHT / 2
 
-        self.vel = pygame.Vector2()
-        self.acc = pygame.Vector2()
-
         self.deathCount = 0
         self.player_status = False
+
+        self.accGravity = 0.5
+        self.velGravity = 0
+
+        self.pressedJump = False
+        self.jumpSpeed = 30
 
 
     def setStatus(self, status):
@@ -32,10 +34,7 @@ class Player(pygame.sprite.Sprite):
     def queryDeathCount(self):
         return self.deathCount
 
-    def applyGravity(self, a, scale=1, dt=1):
-        self.acc.y = a
-        self.vel.y += self.acc.y
-        self.rect.y += self.vel.y + 0.5 * self.acc.y
+
 
     def update(self, dt):
         pressed = pygame.key.get_pressed()
@@ -43,20 +42,34 @@ class Player(pygame.sprite.Sprite):
         move = dt / 3
 
         # Handles player movement (WASD)
-        if pressed[pygame.K_w]:
-            if self.rect.y > -move: self.rect.move_ip(0, -move)
-            if self.rect.y <= -move: self.rect.move_ip(0, move)
+        if pressed[pygame.K_w] and self.pressedJump == False:
+            self.pressedJump = True
         if pressed[pygame.K_a]:
             if self.rect.x > -move: self.rect.move_ip(-move, 0)
-            if self.rect.x <= -move: self.rect.move_ip(move, 0)
         if pressed[pygame.K_s]:
             if self.rect.y < SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, move)
-            if self.rect.y >= SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, -move)
         if pressed[pygame.K_d]:
             if self.rect.x < SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(move, 0)
-            if self.rect.x >= SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(-move, 0)
-        if pressed[pygame.K_SPACE]:
-            self.acc.y += -0.01
+
+        # Jump with W
+        if self.pressedJump == True:
+            self.rect.move_ip(0, -self.jumpSpeed)
+            self.jumpSpeed -= self.accGravity
+
+        # Applies gravity
+        if self.rect.y < SCREEN_HEIGHT - self.rect.height - self.velGravity:
+            self.rect.move_ip(0, self.velGravity)
+            self.velGravity += self.accGravity
+        else:
+            # Contact with ground
+            self.velGravity = 0
+            self.pressedJump = False
+            self.jumpSpeed = 30
+
+        if self.rect.y <= -move: self.rect.move_ip(0, move)
+        if self.rect.x <= -move: self.rect.move_ip(move, 0)
+        if self.rect.y >= SCREEN_HEIGHT - self.rect.height + move: self.rect.move_ip(0, -move)
+        if self.rect.x >= SCREEN_WIDTH - self.rect.width + move: self.rect.move_ip(-move, 0)
 
 
 class Gun(pygame.sprite.Sprite):
@@ -123,9 +136,12 @@ class Gun(pygame.sprite.Sprite):
             if not pressed[pygame.K_LEFT]:
                 self.image = self.imageEast
 
+        # Prevents divide zero normalization error and gun flying off bug
+        if self.pos[0] + self.pos[1] == 0:
+            self.pos += (1, 1)
+
         # Normalization ensures consistent movement
-        if self.pos[0] + self.pos[1] != 0:
-            pygame.Vector2.normalize_ip(self.pos)
+        pygame.Vector2.normalize_ip(self.pos)
 
         # Yeah just do it mate
         self.shoot()
@@ -137,9 +153,10 @@ class Gun(pygame.sprite.Sprite):
 
 class Bullet(pygame.sprite.Sprite):
     # Reminder that Python passes by object reference; when 'direction' changes in class Gun(),
-    # the value in class Bullet() changes as well
+    # the value in class Bullet() changes as well, changing direction of all bullets;
+    # prevent this by making separate variables dirX and dirY
 
-    # Constructor take parameters initial x and y position to spawn and direction to shoot (used in Gun.shoot())
+    # Constructor take parameters x and y position to spawn at; determines direction to shoot (used in Gun.shoot())
     def __init__(self, initX, initY, direction):
         super().__init__()
         self.image = pygame.image.load("resources/sprites/newBoss.png")
@@ -165,7 +182,7 @@ class Bullet(pygame.sprite.Sprite):
             self.dirX *= -1
             self.numBounces += 1
 
-        if self.numBounces == 4:
+        if self.numBounces == 2:
             self.kill()
 
         self.rect.move_ip(self.dirX * move, self.dirY * move)
@@ -201,3 +218,7 @@ class Enemy(pygame.sprite.Sprite):
             bullet = Bullet(self.rect.x, self.rect.y, (1, 0))
             bulletSprites.add(bullet)
             self.lastShotTime = currentTime
+
+class Platform(pygame.sprite.Sprite):
+    def __init__(self):
+        self.image = pygame.image.load("resources/sprites/blockade.png")

@@ -1,4 +1,3 @@
-from random import randint
 from src.entities import *
 from src.constants import *
 
@@ -98,7 +97,6 @@ def main():
 
         charSprites.draw(screen)
         itemSprites.draw(screen)
-        player.applyGravity(0.01, 10, dt)
 
         bulletSprites.draw(screen)
 
