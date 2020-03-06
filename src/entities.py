@@ -44,6 +44,11 @@ class Player(pygame.sprite.Sprite):
         self.pressedJump = False
         self.velJump = 20
 
+        self.killCount = 0
+        self.shotsFired = 0
+
+        self.damageDealt = 0
+
 
     def setStatus(self, status):
         self.player_status = status
@@ -106,6 +111,7 @@ class Gun(pygame.sprite.Sprite):
         self.lastShotTime = pygame.time.get_ticks()
 
     def shoot(self):
+        self.shot
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
         if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
@@ -166,6 +172,28 @@ class Gun(pygame.sprite.Sprite):
         self.rect.x = playerX + (self.pos[0] * 50)
         self.rect.y = playerY + (self.pos[1] * 50)
 
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        self.image = pygame.image.load('resources/sprites/blockade.png')
+        self.rect = self.image.get_rect()
+    def setPos(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+    '''
+    Argument: Sprite class -> rect -> (x,y)
+    '''
+    def detectCollison(self, entity):
+        collision_list = pygame.sprite.spritecollide(entity, platformSprites, dokill=False, collided=None)
+
+        for collided_objects in collision_list:
+            if entity.rect.y > collided_objects.rect.y:
+                print('collide')
+                #player moves up (cant go thru)
+
+            if entity.rect.y < (collided_objects.rect.y - entity.rect.y):
+                print('collide')
+
+        return collision_list
 
 class Bullet(pygame.sprite.Sprite):
     # Reminder that Python passes by object reference; when 'direction' changes in class Gun(),
@@ -234,7 +262,3 @@ class Enemy(pygame.sprite.Sprite):
             bullet = Bullet(self.rect.x, self.rect.y, (1, 0))
             bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
-
-class Platform(pygame.sprite.Sprite):
-    def __init__(self):
-        self.image = pygame.image.load("resources/sprites/blockade.png")
