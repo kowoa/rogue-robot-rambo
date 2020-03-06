@@ -2,7 +2,7 @@ from src.entities import *
 from src.constants import *
 
 def main():
-    global playerSprites, bulletSprites, enemySprites
+
     pygame.init()
 
     icon = pygame.image.load(SCREEN_ICON)
@@ -12,9 +12,12 @@ def main():
     player = Player()
     gun = Gun()
     enemy = Enemy()
+    platform = Platform(SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
     charSprites.add(player, enemy)
     itemSprites.add(gun)
+
+    platformSprites.add(platform)
 
     # TODO: Replace background with something low resolution to improve FPS
     #background = pygame.image.load("resources/backgrounds/background1.png")
@@ -99,6 +102,8 @@ def main():
         itemSprites.draw(screen)
 
         bulletSprites.draw(screen)
+
+        platformSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
