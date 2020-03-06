@@ -1,6 +1,5 @@
 from src.entities import *
 from src.constants import *
-from src.barriers import *
 from os import path
 import csv
 
