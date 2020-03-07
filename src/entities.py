@@ -2,8 +2,30 @@ from src.constants import *
 
 charSprites = pygame.sprite.Group()
 itemSprites = pygame.sprite.Group()
-bulletSprites = pygame.sprite.Group()
+bulletSpritesPlayer = pygame.sprite.Group()
+bulletSpritesEnemy = pygame.sprite.Group()
 platformSprites = pygame.sprite.Group()
+
+class Gravity():
+    def __init__(self, acc, vel):
+        self.accGravity = acc
+        self.velGravity = vel
+
+    # returns True if entity is colliding with ground
+    def update(self, entity):
+        contact = False
+
+        # Applies gravity
+        if entity.rect.y < SCREEN_HEIGHT - entity.rect.height - self.velGravity:
+            entity.rect.move_ip(0, self.velGravity)
+            self.velGravity += self.accGravity
+        else:
+            # Contact with ground
+            self.velGravity = 0
+            contact = True
+
+        return contact
+
 
 
 class Player(pygame.sprite.Sprite):
@@ -17,11 +39,15 @@ class Player(pygame.sprite.Sprite):
         self.deathCount = 0
         self.player_status = False
 
-        self.accGravity = 0.5
-        self.velGravity = 0
+        self.gravity = Gravity(0.5, 0)
 
         self.pressedJump = False
-        self.velJump = 30
+        self.velJump = 20
+
+        self.killCount = 0
+        self.shotsFired = 0
+
+        self.damageDealt = 0
 
 
     def setStatus(self, status):
@@ -54,15 +80,9 @@ class Player(pygame.sprite.Sprite):
         # Jump with W
         if self.pressedJump:
             self.rect.move_ip(0, -self.velJump)
-            self.velJump -= self.accGravity
+            self.velJump -= self.gravity.accGravity
 
-        # Applies gravity
-        if self.rect.y < SCREEN_HEIGHT - self.rect.height - self.velGravity:
-            self.rect.move_ip(0, self.velGravity)
-            self.velGravity += self.accGravity
-        else:
-            # Contact with ground
-            self.velGravity = 0
+        if self.gravity.update(self):
             self.pressedJump = False
             self.velJump = 30
 
@@ -91,12 +111,13 @@ class Gun(pygame.sprite.Sprite):
         self.lastShotTime = pygame.time.get_ticks()
 
     def shoot(self):
+        self.shot
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
         if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
                 and currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, self.pos)
-            bulletSprites.add(bullet)
+            bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
 
 
@@ -151,6 +172,28 @@ class Gun(pygame.sprite.Sprite):
         self.rect.x = playerX + (self.pos[0] * 50)
         self.rect.y = playerY + (self.pos[1] * 50)
 
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        self.image = pygame.image.load('resources/sprites/blockade.png')
+        self.rect = self.image.get_rect()
+    def setPos(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+    '''
+    Argument: Sprite class -> rect -> (x,y)
+    '''
+    def detectCollison(self, entity):
+        collision_list = pygame.sprite.spritecollide(entity, platformSprites, dokill=False, collided=None)
+
+        for collided_objects in collision_list:
+            if entity.rect.y > collided_objects.rect.y:
+                print('collide')
+                #player moves up (cant go thru)
+
+            if entity.rect.y < (collided_objects.rect.y - entity.rect.y):
+                print('collide')
+
+        return collision_list
 
 class Bullet(pygame.sprite.Sprite):
     # Reminder that Python passes by object reference; when 'direction' changes in class Gun(),
@@ -217,9 +260,5 @@ class Enemy(pygame.sprite.Sprite):
         currentTime = pygame.time.get_ticks()
         if currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, (1, 0))
-            bulletSprites.add(bullet)
+            bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
-
-class Platform(pygame.sprite.Sprite):
-    def __init__(self):
-        self.image = pygame.image.load("resources/sprites/blockade.png")
