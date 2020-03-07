@@ -167,7 +167,6 @@ def main():
         itemSprites.draw(screen)
 
         bulletSprites.draw(screen)
-        barrierSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
