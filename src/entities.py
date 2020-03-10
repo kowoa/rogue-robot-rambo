@@ -39,6 +39,7 @@ class Player(pygame.sprite.Sprite):
         self.deathCount = 0
         self.player_status = False
 
+        # Change gravity if you want
         self.gravity = Gravity(0.5, 0)
 
         self.pressedJump = False
@@ -115,7 +116,7 @@ class Gun(pygame.sprite.Sprite):
         currentTime = pygame.time.get_ticks()
         if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
                 and currentTime - self.lastShotTime > self.shootDelay:
-            bullet = Bullet(self.rect.x, self.rect.y, self.pos)
+            bullet = Bullet(self.rect.x, self.rect.y, self.pos, "resources/sprites/aiPlayer.png")
             bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
 
@@ -200,9 +201,9 @@ class Bullet(pygame.sprite.Sprite):
     # prevent this by making separate variables dirX and dirY
 
     # Constructor take parameters x and y position to spawn at; determines direction to shoot (used in Gun.shoot())
-    def __init__(self, initX, initY, direction):
+    def __init__(self, initX, initY, direction, imageDir):
         super().__init__()
-        self.image = pygame.image.load("resources/sprites/newBoss.png")
+        self.image = pygame.image.load(imageDir)
         self.rect = self.image.get_rect()
         self.rect.x = initX
         self.rect.y = initY
@@ -258,6 +259,6 @@ class Enemy(pygame.sprite.Sprite):
     def attack(self):
         currentTime = pygame.time.get_ticks()
         if currentTime - self.lastShotTime > self.shootDelay:
-            bullet = Bullet(self.rect.x, self.rect.y, (1, 0))
+            bullet = Bullet(self.rect.x, self.rect.y, (1, 0), "resources/sprites/newBoss.png")
             bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
