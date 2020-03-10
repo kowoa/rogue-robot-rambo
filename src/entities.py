@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.gravity.update(self):
             self.pressedJump = False
-            self.velJump = 30
+            self.velJump = 20
 
         # Border collision
         if self.rect.y <= -move: self.rect.move_ip(0, move)
@@ -111,7 +111,6 @@ class Gun(pygame.sprite.Sprite):
         self.lastShotTime = pygame.time.get_ticks()
 
     def shoot(self):
-        self.shot
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
         if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
@@ -174,9 +173,9 @@ class Gun(pygame.sprite.Sprite):
 
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y):
-        self.image = pygame.image.load('resources/sprites/blockade.png')
+        super().__init__()
+        self.image = pygame.image.load('resources/sprites/platform.png')
         self.rect = self.image.get_rect()
-    def setPos(self, x, y):
         self.rect.x = x
         self.rect.y = y
     '''
