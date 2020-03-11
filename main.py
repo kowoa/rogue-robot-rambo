@@ -41,6 +41,8 @@ def main():
                 return curr_score
             except:
                 curr_score = 0
+                
+            f.close()
 
     # Displays the scoreboard
     def score():
@@ -69,7 +71,7 @@ def main():
                 fourth = str(temp_scores[3])
                 fifth = str(temp_scores[4])
 
-                f.close
+                f.close()
 
             screen.fill((105, 105, 105))
             scoreBoard = FONT_XLARGE.render("Scoreboard", True,  (255, 0, 0))
