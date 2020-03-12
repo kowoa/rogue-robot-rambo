@@ -116,7 +116,7 @@ class Gun(pygame.sprite.Sprite):
         currentTime = pygame.time.get_ticks()
         if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
                 and currentTime - self.lastShotTime > self.shootDelay:
-            bullet = Bullet(self.rect.x, self.rect.y, self.pos, "resources/sprites/aiPlayer.png")
+            bullet = Bullet(self.rect.x, self.rect.y, self.pos, "resources/sprites/bulletStripPlayer.png")
             bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
 
@@ -172,28 +172,28 @@ class Gun(pygame.sprite.Sprite):
         self.rect.x = playerX + (self.pos[0] * 50)
         self.rect.y = playerY + (self.pos[1] * 50)
 
-class Platform(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.image = pygame.image.load('resources/sprites/platform.png')
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-    '''
-    Argument: Sprite class -> rect -> (x,y)
-    '''
-    def detectCollison(self, entity):
-        collision_list = pygame.sprite.spritecollide(entity, platformSprites, dokill=False, collided=None)
-
-        for collided_objects in collision_list:
-            if entity.rect.y > collided_objects.rect.y:
-                print('collide')
-                #player moves up (cant go thru)
-
-            if entity.rect.y < (collided_objects.rect.y - entity.rect.y):
-                print('collide')
-
-        return collision_list
+##class Platform(pygame.sprite.Sprite):
+##    def __init__(self, x, y):
+##        super().__init__()
+##        self.image = pygame.image.load('resources/sprites/platform.png')
+##        self.rect = self.image.get_rect()
+##        self.rect.x = x
+##        self.rect.y = y
+##    '''
+##    Argument: Sprite class -> rect -> (x,y)
+##    '''
+##    def detectCollison(self, entity):
+##        collision_list = pygame.sprite.spritecollide(entity, platformSprites, dokill=False, collided=None)
+##
+##        for collided_objects in collision_list:
+##            if entity.rect.y > collided_objects.rect.y:
+##                print('collide')
+##                #player moves up (cant go thru)
+##
+##            if entity.rect.y < (collided_objects.rect.y - entity.rect.y):
+##                print('collide')
+##
+##        return collision_list
 
 class Bullet(pygame.sprite.Sprite):
     # Reminder that Python passes by object reference; when 'direction' changes in class Gun(),
@@ -259,6 +259,6 @@ class Enemy(pygame.sprite.Sprite):
     def attack(self):
         currentTime = pygame.time.get_ticks()
         if currentTime - self.lastShotTime > self.shootDelay:
-            bullet = Bullet(self.rect.x, self.rect.y, (1, 0), "resources/sprites/newBoss.png")
+            bullet = Bullet(self.rect.x, self.rect.y, (1, 0), "resources/sprites/BulletStripBoss.png")
             bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
