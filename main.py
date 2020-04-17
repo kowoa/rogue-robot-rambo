@@ -25,6 +25,8 @@ def main():
 
     # TODO: Replace background with something low resolution to improve FPS
     background = pygame.image.load("resources/backgrounds/background1.png")
+    floor = pygame.image.load("resources/backgrounds/floor.png")
+    floor = floor.convert()
     background = background.convert()
     pygame.mixer.music.load("resources/music/background_music.mp3")
     pygame.mixer.music.play(-1)
@@ -167,7 +169,7 @@ def main():
         
         screen.fill((255, 255, 255))
         screen.blit(background, (0, 0))
-
+        screen.blit(floor, (210,690))
         player.update(dt)
         gun.update(dt, player.rect.x, player.rect.y)
         enemy.update(dt)
