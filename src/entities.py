@@ -259,6 +259,6 @@ class Enemy(pygame.sprite.Sprite):
     def attack(self):
         currentTime = pygame.time.get_ticks()
         if currentTime - self.lastShotTime > self.shootDelay:
-            bullet = Bullet(self.rect.x, self.rect.y, (1, 0), "resources/sprites/BulletStripBoss.png")
+            bullet = Bullet(self.rect.x, self.rect.y, (1, 0), "resources/sprites/bulletStripBoss.png")
             bulletSpritesPlayer.add(bullet)
             self.lastShotTime = currentTime
