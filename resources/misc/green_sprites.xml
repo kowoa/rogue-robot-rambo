@@ -1,0 +1,18 @@
+<TextureAtlas imagePath="boss_sprites.png">
+	<SubTexture name="green_enemy_01.png" x="66" y="43" width="60" height="41"/>
+	<SubTexture name="green_enemy_02.png" x="128" y="0" width="56" height="42"/>
+	<SubTexture name="green_enemy_03.png" x="66" y="43" width="60" height="41"/>
+	<SubTexture name="green_enemy_04.png" x="0" y="43" width="64" height="41"/>
+	<SubTexture name="green_enemy_05.png" x="186" y="0" width="27" height="41"/>
+	<SubTexture name="green_enemy_06.png" x="97" y="86" width="27" height="40"/>
+	<SubTexture name="green_enemy_07.png" x="186" y="0" width="27" height="41"/>
+	<SubTexture name="green_enemy_08.png" x="0" y="86" width="32" height="40"/>
+	<SubTexture name="green_enemy_09.png" x="66" y="0" width="60" height="41"/>
+	<SubTexture name="green_enemy_10.png" x="0" y="0" width="64" height="41"/>
+	<SubTexture name="green_enemy_11.png" x="66" y="0" width="60" height="41"/>
+	<SubTexture name="green_enemy_12.png" x="128" y="44" width="54" height="43"/>
+	<SubTexture name="green_enemy_13.png" x="184" y="44" width="27" height="41"/>
+	<SubTexture name="green_enemy_14.png" x="68" y="86" width="27" height="40"/>
+	<SubTexture name="green_enemy_15.png" x="184" y="44" width="27" height="41"/>
+	<SubTexture name="green_enemy_16.png" x="34" y="86" width="32" height="40"/>
+</TextureAtlas>
