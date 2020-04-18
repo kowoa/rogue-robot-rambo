@@ -1,23 +1,40 @@
 import pygame
+import pymunk
+from src.utilities import convert_to_pygame
 
-class Entity(pygame.sprite.Sprite):
-    def __init__(self, image_path, x=0, y=0):
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self, space, image_path, pos=(0, 0)):
+        """
+        Initialize player with elements from pygame and pymunk
+        :param space: pymunk.Space() object
+        :param image_path: string path to image file
+        :param pos: initial position of player in pygame coordinates
+        """
         super().__init__()
         self.image = pygame.image.load(image_path)
-        self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = x, y
+        self.rect = self.image.get_rect(center=pos)
 
-class Player(Entity):
-    def __init__(self, image_path, x=0, y=0):
-        super().__init__(image_path, x, y)
-    
+        mass = 1
+        moment = 100000  # Set to high number so that player does not rotate
+        self.body = pymunk.Body(mass, moment)
+        self.body.position = pos
+        self.shape = pymunk.Poly.create_box(self.body, (self.rect.width, self.rect.height))
+        self.shape.friction = 0.9
+        space.add(self.body, self.shape)
+
+        self.is_jumping = False
+
+    def controls(self):
+        key_pressed = pygame.key.get_pressed()
+        if key_pressed[pygame.K_w] and not self.is_jumping:
+            self.is_jumping = True
+
+
     def update(self):
-        pass
+        pos = convert_to_pygame(self.body.position)
+        self.rect.center = pos
+        print("{}{}".format(self.rect.center, self.body.position))
 
-class Boss(Entity):
-    def __init__(self, image_path, x=0, y=0):
-        super().__init__(image_path, x, y)
-
-    def update(self):
-        pass
-
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, space, image_path, pos=(0, 0)):
