@@ -3,6 +3,9 @@ SCREEN_TITLE = "ROGUE ROBOT RAMBO"
 SCREEN_WIDTH, SCREEN_HEIGHT = 600, 600
 MAX_FPS = 60
 
+# Fonts
+FONT_NAME = "arial"
+
 # Player properties
 PLAYER_ACC = 0.5
 # FUTURE: different frictions for different platforms

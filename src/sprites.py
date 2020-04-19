@@ -17,43 +17,35 @@ class Player(pygame.sprite.Sprite):
         self.can_jump = True
         self.last_jump_time = pygame.time.get_ticks()
 
+        self.score = 0
+
     def check_collisions(self):
         # Check and apply collisions with platforms
-        test_value = 10 # Increase this value to increase strictness of collision
-        self.rect.y -= test_value
-        self.rect.x += test_value
-        r_collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
-        self.rect.x -= 2*test_value
-        l_collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
-        self.rect.x += test_value
-        if r_collisions or l_collisions:
-            self.pos.x -= self.vel.x
-            self.vel.x = 0
-        self.rect.y += 2*test_value
-        b_collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
-        self.rect.y -= test_value
-        if self.vel.y > 0:  # Only applies collision if playing is falling
-            if b_collisions:
-                self.pos.y = b_collisions[0].rect.top
+        self.rect.y += 1
+        collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
+        self.rect.y -= 1
+        if self.vel.y > 0:  # Only applies collision if player is falling
+            if collisions:
+                self.pos.y = collisions[0].rect.top
                 self.vel.y = 0
 
-        return b_collisions
+        return collisions
 
     def update(self):
         keys = pygame.key.get_pressed()
         self.acc = pygame.Vector2(0, GRAVITY_ACC)
         collisions = self.check_collisions()
+        current_time = pygame.time.get_ticks()
 
         # Jump controls
-        if collisions and keys[pygame.K_w] and self.can_jump:  # Get rid of "collisions and" on this line to allow
-            # player to jump in the air (may be smoother gameplay)
+        if collisions and keys[pygame.K_w] and self.can_jump \
+                and self.vel.y >= 0 and current_time - self.last_jump_time >= PLAYER_JUMP_DELAY:
+            # Get rid of "collisions and" to allow player to jump in the air (may be smoother gameplay)
             self.vel.y = PLAYER_JUMP_VEL
             self.can_jump = False
+            self.last_jump_time = current_time
         if collisions:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.last_jump_time >= PLAYER_JUMP_DELAY:
-                self.can_jump = True
-                self.last_jump_time = current_time
+            self.can_jump = True
 
         # Horizontal controls
         if keys[pygame.K_a]:
@@ -75,7 +67,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.midbottom = self.pos
 
     def reset(self):
-        pass
+        # Use this method to reset player's stats and stuff for new game
+        self.__init__(self.game)  # placeholder
 
 
 class Platform(pygame.sprite.Sprite):
