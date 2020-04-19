@@ -24,10 +24,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += 1
         collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
         self.rect.y -= 1
-        if self.vel.y > 0:  # Only applies collision if player is falling
-            if collisions:
-                self.pos.y = collisions[0].rect.top
-                self.vel.y = 0
+        if self.vel.y > 0 and collisions:  # Only applies collision if player is falling
+            self.pos.y = collisions[0].rect.top
+            self.vel.y = 0
 
         return collisions
 
@@ -44,7 +43,7 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = PLAYER_JUMP_VEL
             self.can_jump = False
             self.last_jump_time = current_time
-        if collisions:
+        elif collisions:
             self.can_jump = True
 
         # Horizontal controls

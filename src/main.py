@@ -23,6 +23,17 @@ class Game:
 
         self.gui = GUI(self)
 
+    def run(self):
+        self.start()
+        """ GAME LOOP """
+        while self.is_playing:
+            self.handle_events()
+            self.update()
+            self.draw()
+            self.clock.tick(MAX_FPS)
+
+    # Methods below are all contained within game loop
+
     def start(self):
         """ Start new game """
         self.is_playing = True
@@ -34,17 +45,13 @@ class Game:
             self.all_sprites.add(plat)
             self.platform_sprites.add(plat)
         self.all_sprites.add(self.player)
-        self.run()
 
-    def run(self):
-        """ GAME LOOP """
-        while self.is_playing:
-            self.handle_events()
-            self.update()
-            self.draw()
-            self.clock.tick(MAX_FPS)
-
-    # Methods below are all contained within game loop
+    def handle_events(self):
+        """ Handle pygame events"""
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.is_playing = False
+                self.is_running = False
 
     def update(self):
         """ Update sprites"""
@@ -76,13 +83,6 @@ class Game:
 
         self.all_sprites.update()
 
-    def handle_events(self):
-        """ Handle pygame events"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.is_playing = False
-                self.is_running = False
-
     def draw(self):
         """ Draw updated screen """
         self.screen.fill((0, 0, 0))
@@ -96,7 +96,7 @@ def main():
     game = Game()
     game.gui.draw_start_menu()
     while game.is_running:
-        game.start()
+        game.run()
     pygame.quit()
 
 
