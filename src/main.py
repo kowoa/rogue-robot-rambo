@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from src.file_paths import *
 from src.settings import *
 from src.sprites import *
@@ -17,13 +18,18 @@ class Game:
         self.is_playing = True
 
         self.all_sprites = pygame.sprite.Group()
-        self.player = Player()
+        self.platform_sprites = pygame.sprite.Group()
+        self.player = Player(self)
 
     def start(self):
         """ Start new game """
         self.all_sprites.empty()
         self.player.reset()
 
+        for plat_args in PLATFORM_LIST:
+            plat = Platform(*plat_args)
+            self.all_sprites.add(plat)
+            self.platform_sprites.add(plat)
         self.all_sprites.add(self.player)
 
         self.run()
@@ -40,6 +46,21 @@ class Game:
 
     def update(self):
         """ Update sprites"""
+        # If player reaches top quarter of screen, scroll screen up
+        if self.player.rect.top <= SCREEN_HEIGHT / 4:
+            self.player.pos.y += abs(self.player.vel.y)
+            for platform in self.platform_sprites:
+                platform.rect.y += abs(self.player.vel.y)
+                if platform.rect.top >= SCREEN_HEIGHT + self.player.rect.height:
+                    platform.kill()
+        # Spawn new platforms to keep similar number of platforms
+        while len(self.platform_sprites) < 6:
+            platform_width = randint(50, 100)
+            platform = Platform((randint(0, SCREEN_WIDTH - platform_width), randint(-75, -30)),
+                                (platform_width, 20))
+            self.platform_sprites.add(platform)
+            self.all_sprites.add(platform)
+
         self.all_sprites.update()
 
     def handle_events(self):
