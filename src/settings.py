@@ -6,15 +6,9 @@ MAX_FPS = 60
 # Fonts
 FONT_NAME = "arial"
 
-# Player properties
-PLAYER_ACC = 0.5
-# FUTURE: different frictions for different platforms
-PLAYER_FRICTION = -0.12  # Make sure this is negative
-PLAYER_JUMP_VEL = -18  # Make sure this is negative
-PLAYER_JUMP_DELAY = 500
-
 # Environmental properties
-GRAVITY_ACC = 0.8  # Try to keep close to an integer else the player twitches up and down on platforms
+GRAVITY_ACC = 0.8  # Try to keep close to 1 else the player twitches up and down on platforms
+WIND_VEL = 0  # Not used yet
 
 # Platform arguments for testing
 PLATFORM_LIST = [

@@ -1,6 +1,13 @@
-from os import path
+from pathlib import Path
+# EX: parent_path = /home/khoa/PycharmProjects/667
+current_path = Path(__file__).resolve().parents[0]
+parent_path = Path(__file__).resolve().parents[1]
 
-parent_dir = path.abspath("..")
+# NOTE: make sure to convert each Path() to string
 
-icon_path = parent_dir+"/resources/icons/robot.png"
+# High score
+high_score_path = str(current_path / "high_score.txt")
+
+# Images
+icon_path = str(parent_path / "resources/icons/robot.png")
 

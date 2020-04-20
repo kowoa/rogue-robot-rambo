@@ -1,5 +1,6 @@
 import pygame
-from src.settings import *
+from settings import *
+from file_paths import *
 
 
 class GUI:
@@ -29,7 +30,7 @@ class GUI:
         self.game.screen.fill((0, 0, 0))
         self.draw_text(SCREEN_TITLE, 48, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.draw_text("Use WASD to move!", 22, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT*3/4))
-        self.draw_text("Press any button to play", 16, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT*7/8))
+        self.draw_text("Press any button to play, Press H to show high score", 16, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT*7/8))
         pygame.display.update()
         self.wait_for_key()
 
@@ -38,7 +39,27 @@ class GUI:
         self.draw_text("GAME OVER", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("Score: {}".format(self.game.player.score), 22, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
         self.draw_text("Press any button to play again", 16, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 7 / 8))
+        if self.game.player.score > self.game.high_score:
+            self.game.high_score = self.game.player.score
+            self.draw_text("NEW HIGH SCORE", 36, (255, 255, 255), (SCREEN_WIDTH/2, 10))
+            with open(high_score_path, "w") as file:
+                file.write(str(self.game.high_score))
         pygame.display.update()
         self.wait_for_key()
+
+    def draw_score_menu(self):
+        with open(high_score_path, "r") as file:
+            try:
+                self.game.high_score = int(file.read())
+            except ValueError:
+                self.game.high_score = 0
+        self.game.screen.fill((0, 0, 0))
+        self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.draw_text("High score: {}".format(self.game.high_score), 22, (255, 255, 255),
+                       (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
+        self.draw_text("Press any button to continue", 16, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 7 / 8))
+        pygame.display.update()
+        self.wait_for_key()
+
 
 

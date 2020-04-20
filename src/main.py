@@ -1,9 +1,11 @@
 import pygame
 from random import randint
-from src.file_paths import *
-from src.settings import *
-from src.sprites import *
-from src.gui import *
+from file_paths import *
+from settings import *
+from sprites import *
+from gui import *
+# NOTE: In PyCharm, there will be red highlights in import statements
+# Resolve by right-clicking on src/ folder and Mark Directory as -> Sources Root
 
 
 class Game:
@@ -20,6 +22,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.platform_sprites = pygame.sprite.Group()
         self.player = Player(self)
+        self.high_score = 0
 
         self.gui = GUI(self)
 
@@ -52,6 +55,9 @@ class Game:
             if event.type == pygame.QUIT:
                 self.is_playing = False
                 self.is_running = False
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_h:
+                    self.gui.draw_score_menu()
 
     def update(self):
         """ Update sprites"""
