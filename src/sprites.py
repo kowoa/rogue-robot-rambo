@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         if not self.is_jumping and not self.is_walking:
             if current_time - self.last_frame_update > 100:
                 self.last_frame_update = current_time
-                self.current_frame = (self.current_frame + 1) % len(self.idle_frames)
+                self.current_frame = (self.current_frame + 1) % len(self.idle_frames)  # Make the frames loopy loop
                 self.image = self.idle_frames[self.current_frame]
 
     def check_collisions(self):
