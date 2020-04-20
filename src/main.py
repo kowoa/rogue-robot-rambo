@@ -91,7 +91,7 @@ class Game:
 
     def draw(self):
         """ Draw updated screen """
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((0, 0, 128))
         self.gui.draw_text("Score: {}".format(self.player.score), 22, (255, 255, 255), (SCREEN_WIDTH/2, 15))
 
         self.all_sprites.draw(self.screen)

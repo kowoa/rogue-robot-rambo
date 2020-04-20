@@ -1,29 +1,67 @@
 import pygame
 from settings import *
+from file_paths import *
+from utils import *
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
         super().__init__()
         self.game = game
-        self.image = pygame.Surface((32, 32))
-        self.image.fill((255, 255, 0))
+
+        # Initialize sprite sheets and frame lists
+        self.idle_frames = []
+        self.walk_frames_l = []
+        self.walk_frames_r = []
+        self.jump_frames = []
+        self.load_sprite_sheets()
+
+        # Initialize pygame elements
+        self.image = self.idle_frames[0]
+        self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 40))
 
+        # Initialize vectors for realistic movement
         self.pos = pygame.Vector2(self.rect.center)
         self.vel = pygame.Vector2(0, 0)
         self.acc = pygame.Vector2(0, 0)
         self.friction = -0.12  # Make sure friction is ALWAYS negative
 
-        self.can_jump = True
+        # These variables are used for jumping and sprite animations
+        self.is_jumping = True
         self.last_jump_time = pygame.time.get_ticks()
+        self.is_walking = False
+        self.current_frame = 0
+        self.last_frame_update = 0
 
+        # Keep track of score and stats here
         self.score = 0
 
         # Constants
         self.BASE_ACC = 0.5
         self.JUMP_VEL = -18
         self.JUMP_DELAY = 500
+
+    def load_sprite_sheets(self):
+        idle_sheet = SpriteSheet(player_idle_path)
+        for i in range(0, 8):  # Add all frames of sprite sheet into a list (8 sprites in this case)
+            self.idle_frames.append(idle_sheet.get_sprite(i * 32, 0, 32, 28))
+        walk_sheet = SpriteSheet(player_walk_path)
+        for i in range(0, 8):
+            self.walk_frames_r.append(walk_sheet.get_sprite(i * 32, 0, 32, 32))
+        for frame in self.walk_frames_r:
+            self.walk_frames_l.append(pygame.transform.flip(frame, True, False))
+        jump_sheet = SpriteSheet(player_jump_path)
+        for i in range(0, 6):
+            self.jump_frames.append(jump_sheet.get_sprite(i * 28, 0, 28, 28))
+
+    def animate(self):
+        current_time = pygame.time.get_ticks()
+        if not self.is_jumping and not self.is_walking:
+            if current_time - self.last_frame_update > 100:
+                self.last_frame_update = current_time
+                self.current_frame = (self.current_frame + 1) % len(self.idle_frames)
+                self.image = self.idle_frames[self.current_frame]
 
     def check_collisions(self):
         # Check and apply collisions with platforms
@@ -41,6 +79,8 @@ class Player(pygame.sprite.Sprite):
         collisions = self.check_collisions()
         current_time = pygame.time.get_ticks()
 
+        self.animate()
+
         # Change friction depending on platform
         if collisions:
             self.friction = collisions[0].friction  # Set player friction equal to platform friction
@@ -48,14 +88,14 @@ class Player(pygame.sprite.Sprite):
             self.friction = -0.12  # If player is in air, set back to base friction
 
         # Jump controls
-        if collisions and keys[pygame.K_w] and self.can_jump \
+        if collisions and keys[pygame.K_w] and not self.is_jumping \
                 and self.vel.y >= 0 and current_time - self.last_jump_time >= self.JUMP_DELAY:
             # Get rid of "collisions and" to allow player to jump in the air (may be smoother gameplay)
             self.vel.y = self.JUMP_VEL
-            self.can_jump = False
+            self.is_jumping = True
             self.last_jump_time = current_time
         elif collisions:
-            self.can_jump = True
+            self.is_jumping = False
 
         # Horizontal controls
         if keys[pygame.K_a]:
