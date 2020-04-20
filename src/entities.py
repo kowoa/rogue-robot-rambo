@@ -114,10 +114,13 @@ class Gun(pygame.sprite.Sprite):
     def shoot(self):
         pressed = pygame.key.get_pressed()
         currentTime = pygame.time.get_ticks()
+        bullet_sound = pygame.mixer.Sound("resources/music/bullet_sound.wav")
+        bullet_sound.set_volume(0.3)
         if (pressed[pygame.K_UP] or pressed[pygame.K_LEFT] or pressed[pygame.K_DOWN] or pressed[pygame.K_RIGHT]) \
                 and currentTime - self.lastShotTime > self.shootDelay:
             bullet = Bullet(self.rect.x, self.rect.y, self.pos, "resources/sprites/bulletStripPlayer.png")
             bulletSpritesPlayer.add(bullet)
+            bullet_sound.play()
             self.lastShotTime = currentTime
 
 
@@ -210,7 +213,6 @@ class Bullet(pygame.sprite.Sprite):
         # Force pass by value by making two separate variables to store X and Y direction
         self.dirX = direction[0]
         self.dirY = direction[1]
-
         self.numBounces = 0
 
 
