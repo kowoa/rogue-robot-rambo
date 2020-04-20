@@ -28,11 +28,12 @@ def main():
     floor = pygame.image.load("resources/backgrounds/floor.png")
     floor = floor.convert()
     background = background.convert()
-    pygame.mixer.music.load("resources/music/background_music.mp3")
-    pygame.mixer.music.play(-1)
     pygame.display.set_caption(SCREEN_TITLE)
     pygame.display.set_icon(icon)
 
+#Sounds
+    pygame.mixer.music.load("resources/music/background_music.mp3")
+    pygame.mixer.music.play(-1)
     # Returns difference between current time and earlier time entered as parameter
     def getTimeElapsed(startTime):
         return pygame.time.get_ticks() - startTime
