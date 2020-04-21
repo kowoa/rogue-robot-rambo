@@ -3,6 +3,45 @@ from settings import *
 from file_paths import *
 from utilities import *
 
+# TODO: Combine FX classes to make code more concise
+
+class PlayerLandFX(pygame.sprite.Sprite):
+    def __init__(self, player, image):  # pass in frame argument here
+        super().__init__()
+        self.player = player
+        self.image = image
+        self.rect = self.image.get_rect(midbottom=player.pos)
+        self.last_frame_update = 0
+        self.current_frame = 0
+
+    def update(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_frame_update > 100:
+            self.last_frame_update = current_time
+            self.current_frame = (self.current_frame + 1) % len(self.player.land_fx_frames)
+            self.image = self.player.land_fx_frames[self.current_frame]
+            if self.current_frame >= len(self.player.land_fx_frames) - 1:
+                self.kill()
+
+
+class PlayerJumpFX(pygame.sprite.Sprite):
+    def __init__(self, player, image):
+        super().__init__()
+        self.player = player
+        self.image = image
+        self.rect = self.image.get_rect(midbottom=player.pos)
+        self.last_frame_update = 0
+        self.current_frame = 0
+
+    def update(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_frame_update > 100:
+            self.last_frame_update = current_time
+            self.current_frame = (self.current_frame + 1) % len(self.player.jump_fx_frames)
+            self.image = self.player.jump_fx_frames[self.current_frame]
+            if self.current_frame >= len(self.player.jump_fx_frames) - 1:
+                self.kill()
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, game):
@@ -20,12 +59,14 @@ class Player(pygame.sprite.Sprite):
         self.fall_frames_l = []
         self.land_frames_r = []
         self.land_frames_l = []
+        # FX sprite frame lists
+        self.jump_fx_frames = []
+        self.land_fx_frames = []
         self.load_sprite_sheets()
 
         # Initialize pygame elements
         self.image = self.idle_frames_r[0]
-        self.image.set_colorkey((0, 0, 0))
-        self.rect = self.image.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 40))
+        self.rect = self.image.get_rect(midbottom=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 60))
 
         # Initialize vectors for realistic movement
         self.pos = pygame.Vector2(self.rect.center)
@@ -54,8 +95,6 @@ class Player(pygame.sprite.Sprite):
         self.JUMP_VEL = -18
         self.JUMP_DELAY = 500
 
-        self.has_landed = True
-
     def load_sprite_sheets(self):
         # Idle
         sheet = SpriteSheet(player_idle_path)
@@ -63,30 +102,43 @@ class Player(pygame.sprite.Sprite):
             self.idle_frames_r.append(sheet.get_sprite(i * 32, 0, 32, 28))
         for frame in self.idle_frames_r:
             self.idle_frames_l.append(pygame.transform.flip(frame, True, False))
+
         # Walk
         sheet = SpriteSheet(player_walk_path)
         for i in range(0, 8):
             self.walk_frames_r.append(sheet.get_sprite(i * 32, 0, 32, 32))
         for frame in self.walk_frames_r:
             self.walk_frames_l.append(pygame.transform.flip(frame, True, False))
+
         # Jump
         sheet = SpriteSheet(player_jump_path)
         for i in range(0, 6):
             self.jump_frames_r.append(sheet.get_sprite(i * 28, 0, 28, 28))
         for frame in self.jump_frames_r:
             self.jump_frames_l.append(pygame.transform.flip(frame, True, False))
+
         # Fall
         sheet = SpriteSheet(player_fall_path)
         for i in range(0, 2):
             self.fall_frames_r.append(sheet.get_sprite(i * 32, 0, 32, 28))
         for frame in self.fall_frames_r:
             self.fall_frames_l.append(pygame.transform.flip(frame, True, False))
+
         # Land
-        sheet = SpriteSheet(player_land_dust_path)
+        sheet = SpriteSheet(player_land_no_dust_path)
         for i in range(0, 4):
             self.land_frames_r.append(sheet.get_sprite(i * 44, 0, 44, 32))
         for frame in self.land_frames_r:
             self.land_frames_l.append(pygame.transform.flip(frame, True, False))
+
+        # Jump FX
+        sheet = SpriteSheet(player_jump_fx_path)
+        for i in range(0, 6):
+            self.jump_fx_frames.append(sheet.get_sprite(i * 28, 0, 28, 28))
+        # Land FX
+        sheet = SpriteSheet(player_land_fx_path)
+        for i in range(0, 4):
+            self.land_fx_frames.append(sheet.get_sprite(i * 44, 0, 44, 32))
 
     def animate(self):
         current_time = pygame.time.get_ticks()
@@ -199,12 +251,20 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = self.JUMP_VEL
             self.is_jumping = True
             self.last_jump_time = current_time
+            # Trigger jump fx
+            jump_fx = PlayerJumpFX(self, self.jump_fx_frames[0])
+            self.game.all_sprites.add(jump_fx)
+            self.game.fx_sprites.add(jump_fx)
         elif collisions and self.vel.y == 0:
             self.is_jumping = False
             self.is_falling = False
             if self.can_land:
                 self.is_landing = True
                 self.can_land = False
+                # Trigger land fx
+                land_fx = PlayerLandFX(self, self.land_fx_frames[0])
+                self.game.all_sprites.add(land_fx)
+                self.game.fx_sprites.add(land_fx)
 
         # Falling animation condition
         if self.vel.y > 0:

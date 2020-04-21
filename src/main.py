@@ -21,6 +21,7 @@ class Game:
 
         self.all_sprites = pygame.sprite.Group()
         self.platform_sprites = pygame.sprite.Group()
+        self.fx_sprites = pygame.sprite.Group()
         self.player = Player(self)
         self.high_score = 0
 
@@ -47,6 +48,7 @@ class Game:
             plat = Platform(*plat_args)
             self.all_sprites.add(plat)
             self.platform_sprites.add(plat)
+
         self.all_sprites.add(self.player)
 
     def handle_events(self):
@@ -69,6 +71,8 @@ class Game:
                 if platform.rect.top >= SCREEN_HEIGHT:
                     platform.kill()
                     self.player.score += 10
+            for fx in self.fx_sprites:
+                fx.rect.y += abs(self.player.vel.y)
         # Spawn new platforms to keep similar number of platforms
         while len(self.platform_sprites) < 6:
             platform_width = randint(100, 150)
