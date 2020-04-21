@@ -1,7 +1,6 @@
-from src.entities import *
+from old_files.characters import *
 from src.constants import *
 from os import path
-import csv
 
 
 def main():
