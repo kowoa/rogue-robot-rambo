@@ -19,7 +19,7 @@ player_walk_path = str(parent_path / "resources/sprites/player/walk_sheet.png")
 # Jump sprite is 28x28, 6 frames
 player_jump_path = str(parent_path / "resources/sprites/player/jump_sheet.png")
 # Jump fx sprite is 28x28, 6 frames
-player_jump_fx_path =
+'''player_jump_fx_path =
 # Death sprite is 52x28, 11 frames
 player_death_path =
 # Fall sprite is 32x28, 2 frames
@@ -31,4 +31,4 @@ player_land_dust_path =
 # Land fx sprite is 44x32, 4 frames
 player_land_fx_path =
 # Land no dust sprite is 44x32, 4 frames
-player_land_no_dust_path =
+player_land_no_dust_path ='''
