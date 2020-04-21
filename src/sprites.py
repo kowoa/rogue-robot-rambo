@@ -3,14 +3,14 @@ from settings import *
 from file_paths import *
 from utilities import *
 
-# TODO: Combine FX classes to make code more concise
 
-class PlayerLandFX(pygame.sprite.Sprite):
-    def __init__(self, player, image):  # pass in frame argument here
+class PlayerFX(pygame.sprite.Sprite):
+    def __init__(self, player, frames):
         super().__init__()
         self.player = player
-        self.image = image
+        self.image = frames[0]
         self.rect = self.image.get_rect(midbottom=player.pos)
+        self.frames = frames
         self.last_frame_update = 0
         self.current_frame = 0
 
@@ -18,28 +18,9 @@ class PlayerLandFX(pygame.sprite.Sprite):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_frame_update > 100:
             self.last_frame_update = current_time
-            self.current_frame = (self.current_frame + 1) % len(self.player.land_fx_frames)
-            self.image = self.player.land_fx_frames[self.current_frame]
-            if self.current_frame >= len(self.player.land_fx_frames) - 1:
-                self.kill()
-
-
-class PlayerJumpFX(pygame.sprite.Sprite):
-    def __init__(self, player, image):
-        super().__init__()
-        self.player = player
-        self.image = image
-        self.rect = self.image.get_rect(midbottom=player.pos)
-        self.last_frame_update = 0
-        self.current_frame = 0
-
-    def update(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_frame_update > 100:
-            self.last_frame_update = current_time
-            self.current_frame = (self.current_frame + 1) % len(self.player.jump_fx_frames)
-            self.image = self.player.jump_fx_frames[self.current_frame]
-            if self.current_frame >= len(self.player.jump_fx_frames) - 1:
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+            self.image = self.frames[self.current_frame]
+            if self.current_frame >= len(self.frames) - 1:
                 self.kill()
 
 
@@ -144,74 +125,54 @@ class Player(pygame.sprite.Sprite):
         current_time = pygame.time.get_ticks()
         # I know this looks messy and has duplicate code, but keep this conditional nested to adjust animation speed:
         # >> if current_time - self.last_frame_update > 100
-
-        # Land (DO NOT TOUCH THIS; I GOT IT WORKING BY DIVINE INTERVENTION)
-        if self.is_landing and self.is_facing_right:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+        if current_time - self.last_frame_update > 100:
+            self.last_frame_update = current_time
+            # Land (DO NOT TOUCH THIS; I GOT IT WORKING BY DIVINE INTERVENTION)
+            if self.is_landing and self.is_facing_right:
                 if self.current_land_frame < len(self.land_frames_r):
                     self.current_land_frame = (self.current_land_frame + 1) % len(self.land_frames_r)
                 self.image = self.land_frames_r[self.current_land_frame]
-        elif self.is_landing and not self.is_facing_right:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            elif self.is_landing and not self.is_facing_right:
                 if self.current_land_frame < len(self.land_frames_l):
                     self.current_land_frame = (self.current_land_frame + 1) % len(self.land_frames_l)
                 self.image = self.land_frames_l[self.current_land_frame]
-        if self.current_land_frame >= len(self.land_frames_r) - 1:
-            self.is_landing = False
-            self.current_land_frame = 0
-        # Idle
-        if not self.is_walking and not self.is_jumping and self.is_facing_right \
-                and not self.is_landing and not self.is_falling:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            if self.current_land_frame >= len(self.land_frames_r) - 1:
+                self.is_landing = False
+                self.current_land_frame = 0
+            # Idle
+            if not self.is_walking and not self.is_jumping and self.is_facing_right \
+                    and not self.is_landing and not self.is_falling:
                 self.current_frame = (self.current_frame + 1) % len(self.idle_frames_r)  # Make the frames loopy loop
                 self.image = self.idle_frames_r[self.current_frame]
-        elif not self.is_walking and not self.is_jumping and not self.is_facing_right \
-                and not self.is_landing and not self.is_falling:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            elif not self.is_walking and not self.is_jumping and not self.is_facing_right \
+                    and not self.is_landing and not self.is_falling:
                 self.current_frame = (self.current_frame + 1) % len(self.idle_frames_l)
                 self.image = self.idle_frames_l[self.current_frame]
-        # Walk
-        if self.is_walking and not self.is_jumping and self.is_facing_right \
-                and not self.is_landing and not self.is_falling:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            # Walk
+            if self.is_walking and not self.is_jumping and self.is_facing_right \
+                    and not self.is_landing and not self.is_falling:
                 self.current_frame = (self.current_frame + 1) % len(self.walk_frames_r)
                 self.image = self.walk_frames_r[self.current_frame]
-        elif self.is_walking and not self.is_jumping and not self.is_facing_right \
-                and not self.is_landing and not self.is_falling:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            elif self.is_walking and not self.is_jumping and not self.is_facing_right \
+                    and not self.is_landing and not self.is_falling:
                 self.current_frame = (self.current_frame + 1) % len(self.walk_frames_l)
                 self.image = self.walk_frames_l[self.current_frame]
-
-        # Jump
-        if self.is_jumping and not self.is_falling and self.is_facing_right and not self.is_landing:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            # Jump
+            if self.is_jumping and not self.is_falling and self.is_facing_right and not self.is_landing:
                 if self.current_jump_frame < len(self.jump_frames_r):
                     self.current_jump_frame = (self.current_jump_frame + 1) % len(self.jump_frames_r)
                 self.image = self.jump_frames_r[self.current_jump_frame]
-        elif self.is_jumping and not self.is_falling and not self.is_facing_right and not self.is_landing:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            elif self.is_jumping and not self.is_falling and not self.is_facing_right and not self.is_landing:
                 if self.current_jump_frame < len(self.jump_frames_l):
                     self.current_jump_frame = (self.current_jump_frame + 1) % len(self.jump_frames_l)
                 self.image = self.jump_frames_l[self.current_jump_frame]
-        elif not self.is_jumping:
-            self.current_jump_frame = 0
-        # Fall
-        if self.is_falling and self.is_facing_right and not self.is_landing:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            elif not self.is_jumping:
+                self.current_jump_frame = 0
+            # Fall
+            if self.is_falling and self.is_facing_right and not self.is_landing:
                 self.current_frame = (self.current_frame + 1) % len(self.fall_frames_r)
                 self.image = self.fall_frames_r[self.current_frame]
-        elif self.is_falling and not self.is_facing_right and not self.is_landing:
-            if current_time - self.last_frame_update > 100:
-                self.last_frame_update = current_time
+            elif self.is_falling and not self.is_facing_right and not self.is_landing:
                 self.current_frame = (self.current_frame + 1) % len(self.fall_frames_l)
                 self.image = self.fall_frames_l[self.current_frame]
 
@@ -225,10 +186,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += 1
         collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
         self.rect.y -= 1
-        if self.vel.y > 0 and collisions:  # Only applies collision if player is falling
+        valid_collisions = []
+        if self.vel.y > 0 and collisions \
+                and collisions[0].rect.left - 10 < self.pos.x < collisions[0].rect.right + 10:
+            # Only applies collision if player is falling, adjusts to ensure the floating doesn't float at edges
             self.pos.y = collisions[0].rect.top
             self.vel.y = 0
-        return collisions
+            valid_collisions.append(collisions[0])
+        return valid_collisions
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -252,17 +217,17 @@ class Player(pygame.sprite.Sprite):
             self.is_jumping = True
             self.last_jump_time = current_time
             # Trigger jump fx
-            jump_fx = PlayerJumpFX(self, self.jump_fx_frames[0])
+            jump_fx = PlayerFX(self, self.jump_fx_frames)
             self.game.all_sprites.add(jump_fx)
             self.game.fx_sprites.add(jump_fx)
-        elif collisions and self.vel.y == 0:
+        elif collisions and self.vel.y >= 0:
             self.is_jumping = False
             self.is_falling = False
             if self.can_land:
                 self.is_landing = True
                 self.can_land = False
                 # Trigger land fx
-                land_fx = PlayerLandFX(self, self.land_fx_frames[0])
+                land_fx = PlayerFX(self, self.land_fx_frames)
                 self.game.all_sprites.add(land_fx)
                 self.game.fx_sprites.add(land_fx)
 
