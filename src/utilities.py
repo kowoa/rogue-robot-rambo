@@ -11,6 +11,6 @@ class SpriteSheet:
         # Grab a sprite out of a larger sprite sheet
         sprite = pygame.Surface((width, height))
         sprite.blit(self.image, (0, 0), (x, y, width, height))
-        sprite = pygame.transform.scale(sprite, (width*2, height*2))
+        sprite = pygame.transform.scale2x(sprite)
         sprite.set_colorkey((0, 0, 0))
         return sprite
