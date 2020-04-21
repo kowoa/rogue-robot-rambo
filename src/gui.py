@@ -87,13 +87,14 @@ class GUI:
     def draw_game_over_menu(self):
         self.game.screen.fill((0, 0, 0))
         self.draw_text("GAME OVER", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
-        self.draw_text("Score: {}".format(self.game.player.score), 22, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
+        self.draw_text("Score: {}".format(self.game.player.score), 22, (255, 255, 255),
+                       (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
         self.draw_text("Press any button to play again", 16, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 7 / 8))
         self.create_button(150, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "PLAY AGAIN")
         self.create_button(300, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
         if self.game.player.score > self.game.high_score:
             self.game.high_score = self.game.player.score
-            self.draw_text("NEW HIGH SCORE", 36, (255, 255, 255), (SCREEN_WIDTH/2, 10))
+            self.draw_text("NEW HIGH SCORE", 36, (255, 255, 255), (SCREEN_WIDTH / 2, 10))
             with open(high_score_path, "w") as file:
                 file.write(str(self.game.high_score))
         pygame.display.update()
