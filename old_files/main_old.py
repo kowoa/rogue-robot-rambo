@@ -14,15 +14,19 @@ def main():
     player = Player()
     gun = Gun()
     enemy = Enemy()
-    platform = Platform(SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
+    
+##    platform = Platform(SCREEN_WIDTH//2, SCREEN_HEIGHT//2)
 
     charSprites.add(player, enemy)
     itemSprites.add(gun)
 
-    platformSprites.add(platform)
+##    platformSprites.add(platform)
 
     # TODO: Replace background with something low resolution to improve FPS
-    #background = pygame.image.load("resources/backgrounds/background1.png")
+    background = pygame.image.load("resources/backgrounds/background1.png")
+    background = background.convert()
+    pygame.mixer.music.load("resources/music/background_music.mp3")
+    pygame.mixer.music.play(-1)
     pygame.display.set_caption(SCREEN_TITLE)
     pygame.display.set_icon(icon)
 
@@ -40,6 +44,8 @@ def main():
                 return curr_score
             except:
                 curr_score = 0
+                
+            f.close()
 
     # Displays the scoreboard
     def score():
@@ -68,7 +74,7 @@ def main():
                 fourth = str(temp_scores[3])
                 fifth = str(temp_scores[4])
 
-                f.close
+                f.close()
 
             screen.fill((105, 105, 105))
             scoreBoard = FONT_XLARGE.render("Scoreboard", True,  (255, 0, 0))
@@ -91,6 +97,9 @@ def main():
             scoreFifth = FONT_SMALL.render('5.                ' + fifth, True, (255, 255, 255))
             screen.blit(scoreFifth, (580, 560))
 
+            scoreExit = FONT_SMALL.render('Press C to continue game', True, (255, 255, 255))
+            screen.blit(scoreExit, (580, 605))
+            
             pygame.display.update()
             clock.tick(FPS)
 
@@ -124,10 +133,12 @@ def main():
 
     # Display start menu
     screen.fill((0, 0, 0))
+    
     startMenu = FONT_LARGE.render("PLAY THIS GAME!", True, (255, 255, 255))
     screen.blit(startMenu, (500, 320))
     startMenu = FONT_SMALL.render("Press any button to continue...", True, (255, 255, 255))
     screen.blit(startMenu, (500, 200))
+    sco_re= 0 
     pygame.display.update()
 
     # Wait for user input before starting game
@@ -156,25 +167,26 @@ def main():
 
         # Time step for movement and physics
         dt = clock.tick_busy_loop(FPS)
-
+        
         screen.fill((255, 255, 255))
-        #screen.blit(background, (0, 0))
+        screen.blit(background, (0, 0))
 
         player.update(dt)
         gun.update(dt, player.rect.x, player.rect.y)
         enemy.update(dt)
         bulletSpritesPlayer.update(dt)
-
-        pygame.sprite.spritecollide(player, bulletSpritesPlayer, True)
-
-
+        
+        if pygame.sprite.spritecollide(player, bulletSpritesPlayer, True):
+            sco_re += 1
+##        if pygame.sprite.spritecollide(enemy, bulletSpritesPlayer, True):
+##            score += 2
 
         charSprites.draw(screen)
         itemSprites.draw(screen)
 
         bulletSpritesPlayer.draw(screen)
 
-        platformSprites.draw(screen)
+##        platformSprites.draw(screen)
 
         FPSText = FONT_SMALL.render("FPS: {:.2f}".format(clock.get_fps()), False, (0, 0, 0))
         screen.blit(FPSText, (0, 0))
@@ -183,7 +195,7 @@ def main():
         timerText = FONT_SMALL.render("Time elapsed: {:.2f}".format(getTimeElapsed(startTime) / 1000), False, (0, 0, 0))
         screen.blit(timerText, (0, 20))
 
-        scoreText = FONT_SMALL.render("Score: " + str(loadScore()), False, (0,0,0))
+        scoreText = FONT_SMALL.render("Score: " + str(sco_re), False, (0,0,0))
         screen.blit(scoreText, (1120, 0))
 
         # WARNING: update() function below does not work for python3.7 on MacOS Catalina unless using anaconda3
