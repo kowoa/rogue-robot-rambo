@@ -206,4 +206,4 @@ def main():
 if __name__ == "__main__":
     main()
 else:
-    print("You ran the program from the wrong module. Please run \'main.py\'.")
+    print("You ran the program from the wrong module. Please run \'main_new_old.py\'.")

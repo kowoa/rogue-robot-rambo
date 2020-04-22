@@ -2,7 +2,8 @@ import pygame
 from random import randint
 from file_paths import *
 from settings import *
-from sprites import *
+from player import *
+from environment import *
 from gui import *
 # NOTE: In PyCharm, there will be red highlights in import statements
 # Resolve by right-clicking on src/ folder and Mark Directory as -> Sources Root
@@ -11,7 +12,8 @@ from gui import *
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_icon(pygame.image.load(icon_path))
+        icon = pygame.image.load(icon_path)
+        pygame.display.set_icon(icon)
         pygame.display.set_caption(SCREEN_TITLE)
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -26,6 +28,8 @@ class Game:
         self.high_score = 0
 
         self.gui = GUI(self)
+
+        self.glacial_background = GlacialBackground(self)
 
     def run(self):
         self.start()
@@ -65,17 +69,24 @@ class Game:
         """ Update sprites"""
         # If player reaches top quarter of screen, scroll screen up
         if self.player.rect.top <= SCREEN_HEIGHT / 4:
+            # Move player down
             self.player.pos.y += abs(self.player.vel.y)
+            # Move platforms down
             for platform in self.platform_sprites:
                 platform.rect.y += abs(self.player.vel.y)
                 if platform.rect.top >= SCREEN_HEIGHT:
                     platform.kill()
                     self.player.score += 10
+            # Move fx sprites down
             for fx in self.fx_sprites:
                 fx.rect.y += abs(self.player.vel.y)
+            # Update background
+            # TODO: Make backgound change slightly every time screen scrolls up to simulate climbing feeling
+
+
         # Spawn new platforms to keep similar number of platforms
         while len(self.platform_sprites) < 6:
-            platform_width = randint(100, 150)
+            platform_width = randint(500, 1000)
             platform = Platform((randint(0, SCREEN_WIDTH - platform_width), randint(-40, -30)),
                                 (platform_width, 20))
             self.platform_sprites.add(platform)
@@ -96,6 +107,9 @@ class Game:
     def draw(self):
         """ Draw updated screen """
         self.screen.fill((0, 0, 128))
+        for layer in self.glacial_background.layers:
+            self.screen.blit(layer, (0, 0))
+
         self.gui.draw_text("Score: {}".format(self.player.score), 22, (255, 255, 255), (SCREEN_WIDTH/2, 15))
 
         self.all_sprites.draw(self.screen)
