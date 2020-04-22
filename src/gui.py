@@ -27,26 +27,26 @@ class GUI:
                     self.game.is_running = False
                 if event.type == pygame.MOUSEBUTTONUP:
                     if screen == 'start menu':
-                        if self.interactive_button(mousePos, 85, SCREEN_HEIGHT*6/7, 80, 40): # START BUTTON
+                        if self.interactive_button(mousePos, 350, SCREEN_HEIGHT*6/7, 110, 40): # START BUTTON
                             is_waiting = False
-                        elif self.interactive_button(mousePos, 195, SCREEN_HEIGHT*6/7, 80, 40): # SCORE BUTTON
+                        elif self.interactive_button(mousePos, 500, SCREEN_HEIGHT*6/7, 110, 40): # SCORE BUTTON
                             self.draw_leaderboard_menu()
-                        elif self.interactive_button(mousePos, 310, SCREEN_HEIGHT*6/7, 80, 40): # ABOUT BUTTON
+                        elif self.interactive_button(mousePos, 650, SCREEN_HEIGHT*6/7, 110, 40): # ABOUT BUTTON
                             self.draw_about_menu()
-                        elif self.interactive_button(mousePos, 425, SCREEN_HEIGHT*6/7, 80, 40): # QUIT BUTTON
+                        elif self.interactive_button(mousePos, 800, SCREEN_HEIGHT*6/7, 110, 40): # QUIT BUTTON
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
                     elif screen == 'leaderboard':
-                        if self.interactive_button(mousePos, 250, SCREEN_HEIGHT*6/7, 110, 40):
+                        if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 140, 50): # BACK BUTTON
                             self.draw_start_menu()
                     elif screen == 'score menu':
-                        if self.interactive_button(mousePos, 250, SCREEN_HEIGHT*6/7, 110, 40): # RESUME BUTTON
+                        if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 140, 50): # RESUME BUTTON
                             is_waiting = False
                     elif screen == 'game over menu':
-                        if self.interactive_button(mousePos, 205, SCREEN_HEIGHT*6/7, 80, 40): # PLAY AGAIN BUTTON
+                        if self.interactive_button(mousePos, 527, SCREEN_HEIGHT*6/7, 110, 50): # PLAY AGAIN BUTTON
                             is_waiting = False
-                        elif self.interactive_button(mousePos, 315, SCREEN_HEIGHT*6/7, 80, 40): # END BUTTON
+                        elif self.interactive_button(mousePos, 665, SCREEN_HEIGHT*6/7, 110, 50): # END BUTTON
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
@@ -79,10 +79,10 @@ class GUI:
     def draw_start_menu(self):
         self.game.screen.fill((0, 0, 0))
         self.draw_text(SCREEN_TITLE, 48, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
-        self.create_button(85, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "START")
-        self.create_button(195, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "SCORES")
-        self.create_button(310, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "ABOUT")
-        self.create_button(425, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
+        self.create_button(350, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "START")
+        self.create_button(500, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "SCORES")
+        self.create_button(650, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "ABOUT")
+        self.create_button(800, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
         self.draw_text("Use WASD to move!", 22, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT*3/4))
         pygame.display.update()
         self.wait_for_click('start menu')
@@ -92,8 +92,8 @@ class GUI:
         self.draw_text("GAME OVER", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("Score: {}".format(self.game.player.score), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
-        self.create_button(205, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "PLAY AGAIN")
-        self.create_button(315, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
+        self.create_button(527, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "PLAY AGAIN")
+        self.create_button(665, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "QUIT")
         if self.game.player.score > self.game.high_score:
             self.game.high_score = self.game.player.score
             self.draw_text("NEW HIGH SCORE", 36, (255, 255, 255), (SCREEN_WIDTH / 2, 10))
@@ -112,7 +112,7 @@ class GUI:
         self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("High score: {}".format(self.game.high_score), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
-        self.create_button(240, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "RESUME")
+        self.create_button(567, SCREEN_HEIGHT*6/7, 140, 50, (255,255,255), 14, (0,0,0), text = "RESUME")
         pygame.display.update()
         self.wait_for_click('score menu')
 
@@ -126,7 +126,7 @@ class GUI:
         self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("High score: {}".format(self.game.high_score), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
-        self.create_button(240, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "RESUME")
+        self.create_button(567, SCREEN_HEIGHT*6/7, 140, 50, (255,255,255), 14, (0,0,0), text = "BACK")
         pygame.display.update()
         self.wait_for_click('leaderboard')
     
