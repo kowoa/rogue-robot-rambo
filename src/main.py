@@ -109,6 +109,7 @@ class Game:
         self.screen.fill((0, 0, 128))
         for layer in self.glacial_background.layers:
             self.screen.blit(layer, (0, 0))
+        print(len(self.glacial_background.layers))
 
         self.gui.draw_text("Score: {}".format(self.player.score), 22, (255, 255, 255), (SCREEN_WIDTH/2, 15))
 

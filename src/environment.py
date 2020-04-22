@@ -16,6 +16,8 @@ class Platform(pygame.sprite.Sprite):
         pass
 
 
+# TODO: Combine Background classes to avoid code duplication
+
 class GlacialBackground:
     def __init__(self, game):
         self.game = game
@@ -37,7 +39,7 @@ class GlacialBackground:
         self.layers.append(image)
         image = pygame.image.load(glacial_clouds_mg_1_path).convert_alpha()
         self.layers.append(image)
-        for i in range(0, 7):
+        for i in range(0, len(self.layers)):
             self.layers[i] = pygame.transform.scale(self.layers[i], (SCREEN_WIDTH, SCREEN_HEIGHT))
 
     def update(self):
@@ -63,3 +65,5 @@ class GrassyBackground:
         self.layers.append(image)
         image = pygame.image.load(grassy_clouds_front_path).convert_alpha()
         self.layers.append(image)
+        for i in range(0, len(self.layers)):
+            self.layers[i] = pygame.transform.scale(self.layers[i], (SCREEN_WIDTH, SCREEN_HEIGHT))
