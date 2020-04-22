@@ -30,26 +30,29 @@ class GUI:
                         if self.interactive_button(mousePos, 85, SCREEN_HEIGHT*6/7, 80, 40): # START BUTTON
                             is_waiting = False
                         elif self.interactive_button(mousePos, 195, SCREEN_HEIGHT*6/7, 80, 40): # SCORE BUTTON
-                            self.draw_score_menu()
+                            self.draw_leaderboard_menu()
                         elif self.interactive_button(mousePos, 310, SCREEN_HEIGHT*6/7, 80, 40): # ABOUT BUTTON
                             self.draw_about_menu()
                         elif self.interactive_button(mousePos, 425, SCREEN_HEIGHT*6/7, 80, 40): # QUIT BUTTON
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
+                    elif screen == 'leaderboard':
+                        if self.interactive_button(mousePos, 250, SCREEN_HEIGHT*6/7, 110, 40):
+                            self.draw_start_menu()
                     elif screen == 'score menu':
                         if self.interactive_button(mousePos, 250, SCREEN_HEIGHT*6/7, 110, 40): # RESUME BUTTON
                             is_waiting = False
                     elif screen == 'game over menu':
-                        if self.interactive_button(mousePos, 150, SCREEN_HEIGHT*6/7, 80, 40): # PLAY AGAIN BUTTON
+                        if self.interactive_button(mousePos, 205, SCREEN_HEIGHT*6/7, 80, 40): # PLAY AGAIN BUTTON
                             is_waiting = False
-                        elif self.interactive_button(mousePos, 300, SCREEN_HEIGHT*6/7, 80, 40): # END BUTTON
+                        elif self.interactive_button(mousePos, 315, SCREEN_HEIGHT*6/7, 80, 40): # END BUTTON
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
 
     # Use this method to display a button on the position of the scren for your liking
-    # Enter a rgb color for outline parameter
+    # Enter a rgb color for outline, color, and text color parameter
     def create_button(self, x, y, width, height, color, text_size, text_color, outline = None, text = ''):
         if outline:
             pygame.draw.rect(self.game.screen, outline, (x - 2, y - 2, width + 4, height + 4), 0)
@@ -64,7 +67,7 @@ class GUI:
 
     # Use method to be an interactive button
     '''The position parameter is the positon of the mouse, use 'position = pygame.mouse.get_pos()' 
-        in game loop to keep track of the position of the mouse. Also must create an event when
+        in wait_for_click() to keep track of the position of the mouse. Also must create an event when
         the mouse clicks the button it creates an action.'''
     def interactive_button(self, position, x, y, width, height):
         # x, y, width, and height should be the same as the ones you used for the button 
@@ -89,9 +92,8 @@ class GUI:
         self.draw_text("GAME OVER", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("Score: {}".format(self.game.player.score), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
-        self.draw_text("Press any button to play again", 16, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 7 / 8))
-        self.create_button(150, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "PLAY AGAIN")
-        self.create_button(300, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
+        self.create_button(205, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "PLAY AGAIN")
+        self.create_button(315, SCREEN_HEIGHT*6/7, 80, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
         if self.game.player.score > self.game.high_score:
             self.game.high_score = self.game.player.score
             self.draw_text("NEW HIGH SCORE", 36, (255, 255, 255), (SCREEN_WIDTH / 2, 10))
@@ -110,10 +112,23 @@ class GUI:
         self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("High score: {}".format(self.game.high_score), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
-        self.draw_text("Press any button to continue", 16, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 7 / 8))
         self.create_button(240, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "RESUME")
         pygame.display.update()
         self.wait_for_click('score menu')
+
+    def draw_leaderboard_menu(self):
+        with open(high_score_path, "r") as file:
+            try:
+                self.game.high_score = int(file.read())
+            except ValueError:
+                self.game.high_score = 0
+        self.game.screen.fill((0, 0, 0))
+        self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.draw_text("High score: {}".format(self.game.high_score), 22, (255, 255, 255),
+                       (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
+        self.create_button(240, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "RESUME")
+        pygame.display.update()
+        self.wait_for_click('leaderboard')
     
     def draw_about_menu(self):
         pass
