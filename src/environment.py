@@ -40,4 +40,26 @@ class GlacialBackground:
         for i in range(0, 7):
             self.layers[i] = pygame.transform.scale(self.layers[i], (SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    def update(self):
+        pass
 
+
+class GrassyBackground:
+    def __init__(self, game):
+        self.game = game
+        self.layers = []
+        self.load_images()
+
+    def load_images(self):
+        image = pygame.image.load(grassy_sky_path).convert_alpha()
+        self.layers.append(image)
+        image = pygame.image.load(grassy_far_mountains_path).convert_alpha()
+        self.layers.append(image)
+        image = pygame.image.load(grassy_mountains_path).convert_alpha()
+        self.layers.append(image)
+        image = pygame.image.load(grassy_clouds_mid_path).convert_alpha()
+        self.layers.append(image)
+        image = pygame.image.load(grassy_hill_path).convert_alpha()
+        self.layers.append(image)
+        image = pygame.image.load(grassy_clouds_front_path).convert_alpha()
+        self.layers.append(image)

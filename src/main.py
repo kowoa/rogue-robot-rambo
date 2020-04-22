@@ -15,9 +15,9 @@ class Game:
         icon = pygame.image.load(icon_path)
         pygame.display.set_icon(icon)
         pygame.display.set_caption(SCREEN_TITLE)
-
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
+
         self.is_running = True
         self.is_playing = True
 

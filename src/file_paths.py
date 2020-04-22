@@ -9,7 +9,7 @@ parent_path = Path(__file__).resolve().parents[1]
 high_score_path = str(current_path / "high_score.txt")
 
 # Icon
-icon_path = str(parent_path / "resources/icons/robot.png")
+icon_path = str(parent_path / "resources/icons/gun.png")
 
 # Player sprite sheet paths
 p = parent_path / "resources/sprites/player"
