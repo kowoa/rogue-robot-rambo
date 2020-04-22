@@ -254,10 +254,10 @@ class Player(pygame.sprite.Sprite):
         self.pos += self.vel + (0.5 * self.acc)  # Kinematic equation
 
         # Wrap around sides of screen
-        if self.pos.x < 0:
-            self.pos.x = SCREEN_WIDTH
-        if self.pos.x > SCREEN_WIDTH:
-            self.pos.x = 0
+        if self.pos.x < -self.rect.width/2:
+            self.pos.x = SCREEN_WIDTH + self.rect.width/2
+        if self.pos.x > SCREEN_WIDTH + self.rect.width/2:
+            self.pos.x = -self.rect.width/2
 
         # Calculated position will always represent midbottom of player sprite
         self.rect.midbottom = self.pos
@@ -267,12 +267,5 @@ class Player(pygame.sprite.Sprite):
         self.__init__(self.game)  # placeholder
 
 
-class Platform(pygame.sprite.Sprite):
-    def __init__(self, pos=(0, 0), size=(16, 16), friction=-0.12):
-        super().__init__()
-        self.image = pygame.Surface(size)
-        self.image.fill((0, 255, 0))
-        self.rect = self.image.get_rect(topleft=pos)
 
-        self.friction = friction
 
