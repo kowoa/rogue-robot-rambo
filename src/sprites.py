@@ -52,11 +52,12 @@ class Player(pygame.sprite.Sprite):
         # Initialize vectors for realistic movement
         self.pos = pygame.Vector2(self.rect.center)
         self.vel = pygame.Vector2(0, 0)
-        self.acc = pygame.Vector2(0, 0)
+        self.acc = pygame.Vector2(0, GRAVITY_ACC)
         self.friction = -0.12  # Make sure friction is ALWAYS negative
 
         # These variables are used for jumping mechanics and sprite animations
         self.is_jumping = False
+        self.can_jump = False
         self.is_falling = False
         self.is_landing = False
         self.can_land = False  # Used to regulate landing animation
@@ -73,7 +74,7 @@ class Player(pygame.sprite.Sprite):
 
         # Constants
         self.BASE_ACC = 0.5
-        self.JUMP_VEL = -18
+        self.JUMP_VEL = -20
         self.JUMP_DELAY = 500
 
     def load_sprite_sheets(self):
@@ -181,38 +182,47 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.bottom = bottom
 
-    def check_collisions(self):
+    def apply_platform_collisions(self):
         # Check and apply collisions with platforms
         self.rect.y += 1
         collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
         self.rect.y -= 1
-        valid_collisions = []
-        if self.vel.y > 0 and collisions \
-                and collisions[0].rect.left - 10 < self.pos.x < collisions[0].rect.right + 10:
-            # Only applies collision if player is falling, adjusts to ensure the floating doesn't float at edges
-            self.pos.y = collisions[0].rect.top
-            self.vel.y = 0
-            valid_collisions.append(collisions[0])
-        return valid_collisions
+        # Only applies collision if player is falling, adjusts to ensure the floating doesn't float at edges
+        if self.vel.y > 0 and collisions and collisions[0].rect.left - 10 < self.pos.x < collisions[0].rect.right + 10:
+            if self.pos.y < collisions[0].rect.bottom:  # This makes it so player doesn't teleport up platforms
+                self.pos.y = collisions[0].rect.top
+                self.vel.y = 0
+
+                # Change friction depending on platform
+                if collisions:
+                    self.friction = collisions[0].friction  # Set player friction equal to platform friction
+                else:
+                    self.friction = -0.12  # If player is in air, set back to base friction
+
+                # Allow jumping
+                if not self.is_jumping:
+                    self.can_jump = True
+
+                self.is_jumping = False
+                self.is_falling = False
+                if self.can_land:
+                    self.can_land = False
+                    self.is_landing = True
+                    # Trigger land fx
+                    land_fx = PlayerFX(self, self.land_fx_frames)
+                    self.game.all_sprites.add(land_fx)
+                    self.game.fx_sprites.add(land_fx)
 
     def update(self):
         keys = pygame.key.get_pressed()
         self.acc = pygame.Vector2(0, GRAVITY_ACC)
-        collisions = self.check_collisions()
+        self.apply_platform_collisions()
         current_time = pygame.time.get_ticks()
 
         self.animate()
 
-        # Change friction depending on platform
-        if collisions:
-            self.friction = collisions[0].friction  # Set player friction equal to platform friction
-        else:
-            self.friction = -0.12  # If player is in air, set back to base friction
-
-        # Jump controls
-        if collisions and keys[pygame.K_w] and not self.is_jumping \
-                and self.vel.y >= 0 and current_time - self.last_jump_time >= self.JUMP_DELAY:
-            # Get rid of "collisions and" to allow player to jump in the air (may be smoother gameplay)
+        # Jump Controls
+        if self.can_jump and keys[pygame.K_w] and current_time - self.last_jump_time >= self.JUMP_DELAY:
             self.vel.y = self.JUMP_VEL
             self.is_jumping = True
             self.last_jump_time = current_time
@@ -220,16 +230,7 @@ class Player(pygame.sprite.Sprite):
             jump_fx = PlayerFX(self, self.jump_fx_frames)
             self.game.all_sprites.add(jump_fx)
             self.game.fx_sprites.add(jump_fx)
-        elif collisions and self.vel.y >= 0:
-            self.is_jumping = False
-            self.is_falling = False
-            if self.can_land:
-                self.is_landing = True
-                self.can_land = False
-                # Trigger land fx
-                land_fx = PlayerFX(self, self.land_fx_frames)
-                self.game.all_sprites.add(land_fx)
-                self.game.fx_sprites.add(land_fx)
+            self.can_jump = False
 
         # Falling animation condition
         if self.vel.y > 0:

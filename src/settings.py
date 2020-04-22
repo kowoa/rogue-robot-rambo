@@ -13,7 +13,7 @@ WIND_VEL = 0  # Not used yet
 # Platform arguments for testing
 PLATFORM_LIST = [
     ((0, SCREEN_HEIGHT - 40), (SCREEN_WIDTH, 40)),
-    ((SCREEN_WIDTH/2-50, SCREEN_HEIGHT*3/4), (100, 20)),
+    ((SCREEN_WIDTH/2-30, SCREEN_HEIGHT*3/4), (100, 20)),
     ((125, SCREEN_HEIGHT-350), (100, 20)),
     ((350, 200), (100, 20)),
     ((175, 100), (50, 20))
