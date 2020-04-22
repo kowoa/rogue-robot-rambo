@@ -1,4 +1,4 @@
-import pygame
+import pygame, sys
 from settings import *
 from file_paths import *
 
@@ -25,6 +25,7 @@ class GUI:
                     is_waiting = False
                     self.game.is_playing = False
                     self.game.is_running = False
+                    sys.exit()
                 if event.type == pygame.MOUSEBUTTONUP:
                     if screen == 'start menu':
                         if self.interactive_button(mousePos, 350, SCREEN_HEIGHT*6/7, 110, 40): # START BUTTON
@@ -37,6 +38,7 @@ class GUI:
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
+                            sys.exit()
                     elif screen == 'leaderboard':
                         if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 140, 50): # BACK BUTTON
                             self.draw_start_menu()
@@ -50,6 +52,7 @@ class GUI:
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
+                            sys.exit()
 
     # Use this method to display a button on the position of the scren for your liking
     # Enter a rgb color for outline, color, and text color parameter
