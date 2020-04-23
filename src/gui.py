@@ -63,7 +63,8 @@ class GUI:
             pygame.font.init()
             font = pygame.font.Font(self.font_name, text_size)
             text = font.render(text, 1, text_color)
-            self.game.screen.blit(text, (x + (width / 2 - text.get_width() / 2), y + (height / 2 - text.get_height() / 2)))
+            self.game.screen.blit(text, (x + (width / 2 - text.get_width() / 2), y + 
+                                        (height / 2 - text.get_height() / 2)))
 
     # Use method to be an interactive button
     '''The position parameter is the positon of the mouse, use 'position = pygame.mouse.get_pos()' 
@@ -84,6 +85,8 @@ class GUI:
         self.create_button(650, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "ABOUT")
         self.create_button(800, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "QUIT")
         self.draw_text("Use WASD to move!", 22, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT*3/4))
+        header = pygame.transform.scale(pygame.image.load(header_path).convert(), (400, 200))
+        self.game.screen.blit(header, (440, SCREEN_HEIGHT / 6))
         pygame.display.update()
         self.wait_for_click('start menu')
 
