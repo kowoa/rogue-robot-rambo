@@ -5,6 +5,7 @@ from settings import *
 from player import *
 from environment import *
 from gui import *
+from score import *
 # NOTE: In PyCharm, there will be red highlights in import statements
 # Resolve by right-clicking on src/ folder and Mark Directory as -> Sources Root
 # WARNING: Do NOT use .mp3 files as there is limited support in pygame
@@ -34,7 +35,8 @@ class Game:
         self.all_sprites.add(self.player)
         self.character_sprites.add(self.player)
 
-        self.high_score = 0
+        self.high_score = Score()
+        self.score = Score()
 
         self.gui = GUI(self)
 
@@ -95,7 +97,7 @@ class Game:
                 platform.rect.y += abs(self.player.vel.y)
                 if platform.rect.top >= SCREEN_HEIGHT:
                     platform.kill()
-                    self.player.score += 10
+                    self.score += Score(10, ScoreType.FALL_DEATH)
             # Move fx sprites down
             for fx in self.fx_sprites:
                 fx.rect.y += abs(self.player.vel.y)
@@ -131,7 +133,7 @@ class Game:
         for layer in self.background.layers:
             self.screen.blit(layer, (0, 0))
 
-        self.gui.draw_text("Score: {}".format(self.player.score), 22, (255, 255, 255), (SCREEN_WIDTH/2, 15))
+        self.gui.draw_text("Score: {}".format(self.score.getPoints()), 22, (255, 255, 255), (SCREEN_WIDTH/2, 15))
 
         self.platform_sprites.draw(self.screen)
         self.fx_sprites.draw(self.screen)
