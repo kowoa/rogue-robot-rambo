@@ -52,7 +52,12 @@ p = parent_path / "resources/backgrounds/grassy_mountains/layers_fullcolor"
 grassy_sky_path = str(p / "sky_fc.png")
 grassy_far_mountains_path = str(p / "far_mountains_fc.png")
 grassy_mountains_path = str(p / "grassy_mountains_fc.png")
-grassy_clouds_mid_path = str(p / "clouds_mid_fx.png")
+grassy_clouds_mid_path = str(p / "clouds_mid_fc.png")
 grassy_hill_path = str(p / "hill.png")
 grassy_clouds_front_path = str(p / "clouds_front_fc.png")
 
+# Sounds
+# Blazer Rail
+blazer_rail_path = str(parent_path / "resources/music/Blazer Rail.wav")
+# Jump
+jump_sound_path = str(parent_path / "resources/sound_fx/Jump.wav")
