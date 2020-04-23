@@ -16,8 +16,6 @@ class Platform(pygame.sprite.Sprite):
         pass
 
 
-# TODO: Combine Background classes to avoid code duplication
-
 class GlacialBackground:
     def __init__(self, game):
         self.game = game
@@ -67,3 +65,20 @@ class GrassyBackground:
         self.layers.append(image)
         for i in range(0, len(self.layers)):
             self.layers[i] = pygame.transform.scale(self.layers[i], (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    def update(self):
+        pass
+
+
+class BackgroundMusic:
+    def __init__(self):
+        pygame.mixer.music.load(blazer_rail_path)  # Placeholder
+        pygame.mixer.music.play(-1)
+
+    def update(self):
+        # FUTURE: update music depend on conditions and contexts
+        pygame.mixer.music.fadeout(500)
+
+    def reset(self):
+        pygame.mixer.music.play(-1)
+
