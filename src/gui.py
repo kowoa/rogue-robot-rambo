@@ -45,10 +45,18 @@ class GUI:
                     elif screen == 'score menu':
                         if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 140, 50): # RESUME BUTTON
                             is_waiting = False
+                    elif screen == 'pause menu':
+                        if self.interactive_button(mousePos, 527, SCREEN_HEIGHT*6/7, 110, 50): # RESUME BUTTON
+                            is_waiting = False
+                        elif self.interactive_button(mousePos, 665, SCREEN_HEIGHT*6/7, 110, 50): # QUIT BUTTON
+                            is_waiting = False
+                            self.game.is_playing = False
+                            self.game.is_running = False
+                            sys.exit()
                     elif screen == 'game over menu':
                         if self.interactive_button(mousePos, 527, SCREEN_HEIGHT*6/7, 110, 50): # PLAY AGAIN BUTTON
-                            is_waiting = False
-                        elif self.interactive_button(mousePos, 665, SCREEN_HEIGHT*6/7, 110, 50): # END BUTTON
+                            self.game.is_playing = True
+                        elif self.interactive_button(mousePos, 665, SCREEN_HEIGHT*6/7, 110, 50): # QUIT BUTTON
                             is_waiting = False
                             self.game.is_playing = False
                             self.game.is_running = False
@@ -107,6 +115,14 @@ class GUI:
                 file.write(str(self.game.high_score.getPoints()))
         pygame.display.update()
         self.wait_for_click('game over menu')
+    
+    def draw_pause_menu(self):
+        self.game.screen.fill((0,0,0))
+        self.draw_text("PAUSED", 48, (255,255,255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.create_button(527, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "RESUME")
+        self.create_button(665, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "QUIT")
+        pygame.display.update()
+        self.wait_for_click('pause menu')
 
     def draw_score_menu(self):
         with open(high_score_path, "r") as file:

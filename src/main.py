@@ -85,6 +85,8 @@ class Game:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_h:
                     self.gui.draw_score_menu()
+                elif event.key == pygame.K_p:
+                    self.gui.draw_pause_menu()
 
     def update(self):
         """ Update sprites"""
