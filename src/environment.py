@@ -12,9 +12,8 @@ class Platform(pygame.sprite.Sprite):
 
         self.friction = friction
 
-    def load_sprite_sheets(self):
+    def load_images(self):
         pass
-
 
 class GlacialBackground:
     def __init__(self, game):

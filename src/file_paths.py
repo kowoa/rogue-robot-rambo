@@ -61,3 +61,6 @@ grassy_clouds_front_path = str(p / "clouds_front_fc.png")
 blazer_rail_path = str(parent_path / "resources/music/Blazer Rail.wav")
 # Jump
 jump_sound_path = str(parent_path / "resources/sound_fx/Jump.wav")
+
+# Platforms
+grass_tile_flat_path = str(parent_path / "resources/platforms/Grass_Tile_Flat.png")
