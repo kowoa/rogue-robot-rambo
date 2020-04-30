@@ -14,6 +14,9 @@ icon_path = str(parent_path / "resources/icons/gun.png")
 # Start Menu Image Header
 header_path = str(parent_path / "resources/extra/startmenu.gif")
 
+# Our Pics
+adrienne_path = str(parent_path / "resources/extra/adriennepic.jpeg")
+
 # Player sprite sheet paths
 p = parent_path / "resources/sprites/player"
 # Idle sprite is 32x28, 8 frames

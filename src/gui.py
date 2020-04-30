@@ -32,8 +32,10 @@ class GUI:
                             is_waiting = False
                         elif self.interactive_button(mousePos, 500, SCREEN_HEIGHT*6/7, 110, 40): # SCORE BUTTON
                             self.draw_leaderboard_menu()
+                            is_waiting = False
                         elif self.interactive_button(mousePos, 650, SCREEN_HEIGHT*6/7, 110, 40): # ABOUT BUTTON
                             self.draw_about_menu()
+                            is_waiting = False
                         elif self.interactive_button(mousePos, 800, SCREEN_HEIGHT*6/7, 110, 40): # QUIT BUTTON
                             is_waiting = False
                             self.game.is_playing = False
@@ -42,6 +44,11 @@ class GUI:
                     elif screen == 'leaderboard':
                         if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 140, 50): # BACK BUTTON
                             self.draw_start_menu()
+                            is_waiting = False
+                    elif screen == 'about menu':
+                        if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 110, 40): # BACK BUTTON
+                            self.draw_start_menu()
+                            is_waiting = False
                     elif screen == 'score menu':
                         if self.interactive_button(mousePos, 567, SCREEN_HEIGHT*6/7, 140, 50): # RESUME BUTTON
                             is_waiting = False
@@ -90,7 +97,7 @@ class GUI:
 
     def draw_start_menu(self):
         self.game.screen.fill((0, 0, 0))
-        self.draw_text(SCREEN_TITLE, 48, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        self.draw_text(SCREEN_TITLE, 52, (255, 255, 255), (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         self.create_button(350, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "START")
         self.create_button(500, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "SCORES")
         self.create_button(650, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "ABOUT")
@@ -103,7 +110,7 @@ class GUI:
 
     def draw_game_over_menu(self):
         self.game.screen.fill((0, 0, 0))
-        self.draw_text("GAME OVER", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.draw_text("GAME OVER", 52, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("Score: {}".format(self.game.score.getPoints()), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
         self.create_button(527, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "PLAY AGAIN")
@@ -118,9 +125,9 @@ class GUI:
     
     def draw_pause_menu(self):
         self.game.screen.fill((0,0,0))
-        self.draw_text("PAUSED", 48, (255,255,255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
-        self.create_button(527, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "RESUME")
-        self.create_button(665, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "QUIT")
+        self.draw_text("PAUSED", 52, (255,255,255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.create_button(520, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "RESUME")
+        self.create_button(658, SCREEN_HEIGHT*6/7, 110, 50, (255,255,255), 14, (0,0,0), text = "QUIT")
         pygame.display.update()
         self.wait_for_click('pause menu')
 
@@ -131,7 +138,7 @@ class GUI:
             except ValueError:
                 self.game.high_score = 0
         self.game.screen.fill((0, 0, 0))
-        self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.draw_text("HIGH SCORE", 52, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("High score: {}".format(self.game.high_score), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
         self.create_button(567, SCREEN_HEIGHT*6/7, 140, 50, (255,255,255), 14, (0,0,0), text = "RESUME")
@@ -145,7 +152,7 @@ class GUI:
             except ValueError:
                 self.game.high_score = 0
         self.game.screen.fill((0, 0, 0))
-        self.draw_text("HIGH SCORE", 48, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        self.draw_text("HIGH SCORE", 52, (255, 255, 255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
         self.draw_text("High score: {}".format(self.game.high_score.getPoints()), 22, (255, 255, 255),
                        (SCREEN_WIDTH / 2, SCREEN_HEIGHT * 3 / 4))
         self.create_button(567, SCREEN_HEIGHT*6/7, 140, 50, (255,255,255), 14, (0,0,0), text = "BACK")
@@ -153,4 +160,23 @@ class GUI:
         self.wait_for_click('leaderboard')
     
     def draw_about_menu(self):
-        pass
+        self.game.screen.fill((0,0,0))
+        self.draw_text("ABOUT", 52, (255,255,255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 7))
+        self.draw_text("Our game is a roguelike 2D platformer where the player tries to kill the AI. This "
+                    "is a game where the player is the boss and the AI adapts to their patterns. It will", 20, 
+                    (255,255,255), (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3))
+        self.draw_text("have pixel/sprite graphics and will be programmed primarily in Python. The "
+                    "defining feature of this game entails that the AI learns your moves and eventually either", 20, 
+                    (255,255,255), (SCREEN_WIDTH / 2, 263))
+        self.draw_text("you improve or let the AI get to you.Each time the AI improves,"
+                    "we give the player a chance by improving the player’s statistics.", 20, 
+                    (255,255,255), (SCREEN_WIDTH / 2, 285))
+        self.draw_text("Khoa Hoang", 25, (255,255,255), (200, SCREEN_HEIGHT / 2))
+        self.draw_text("Matthew Innaurato", 25, (255,255,255), (500, SCREEN_HEIGHT / 2))
+        self.draw_text("Pratham Kwatra", 25, (255,255,255), (750, SCREEN_HEIGHT / 2))
+        self.draw_text("Adrienne Lhuc Estrella", 25, (255,255,255), (1050, SCREEN_HEIGHT / 2))
+        self.create_button(567, SCREEN_HEIGHT*6/7, 110, 40, (255,255,255), 14, (0,0,0), text = "BACK")
+        adrienne = pygame.transform.scale(pygame.image.load(adrienne_path).convert(), (120, 160))
+        self.game.screen.blit(adrienne, (990, 400))
+        pygame.display.update()
+        self.wait_for_click('about menu')
