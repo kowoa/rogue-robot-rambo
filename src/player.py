@@ -1,7 +1,9 @@
 import pygame
+from paths import *
 from settings import *
-from file_paths import *
-from utilities import *
+from utils import *
+from bullets import *
+from guns import *
 
 
 class PlayerFX(pygame.sprite.Sprite):
@@ -35,6 +37,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.game = game
 
+        # Add to sprite groups
+        self.game.char_sprites.add(self)
+        self.game.all_sprites.add(self)
+
         self.sound_fx = PlayerSoundFX()
 
         # Initialize sprite sheets and frame lists
@@ -58,7 +64,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom=(SCREEN_WIDTH/2, SCREEN_HEIGHT - 60))
 
         # Initialize vectors for realistic movement
-        self.pos = pygame.Vector2(self.rect.center)
+        self.pos = pygame.Vector2(self.rect.midbottom)
         self.vel = pygame.Vector2(0, 0)
         self.acc = pygame.Vector2(0, GRAVITY_ACC)
         self.friction = -0.12  # Make sure friction is ALWAYS negative
@@ -79,14 +85,45 @@ class Player(pygame.sprite.Sprite):
         self.current_land_frame = 0  # Used for landing animation
         self.last_frame_update = 0
 
-        # Keep track of score and stats here
-        self.score = 0
+        # Future (ft) invisible player used for AI to determine where to shoot
+        self.last_ft_time = 0
+        self.ft_spd_scalar = 0.8  # Speed scalar; Tweak this to modify AI prediction
+        self.ft_rect = pygame.Rect(self.rect.center, (28, 28))
+        self.ft_pos = pygame.Vector2(self.rect.center)  # AI tracks this
+        self.ft_vel = pygame.Vector2(self.vel.xy * self.ft_spd_scalar)
+
+        """ UNCOMMENT THIS TO SHOW INVISIBLE FUTURE PLAYER """
+        """
+        self.ft_image = pg.Surface((28, 28))
+        self.ft_image.fill((0, 0, 255))
+        """
 
         # Constants
         self.BASE_ACC = 0.5
         self.JUMP_VEL = -20
         self.JUMP_DELAY = 500
         self.DESCEND_DELAY = 500
+
+        # Give player a gun
+        Gun(self.game, self)
+
+    def send_future_player(self, current_time):
+        if current_time - self.last_ft_time > 1000:
+            self.last_ft_time = current_time
+            player_center = (self.pos.x, self.pos.y - self.rect.h/2)
+            self.ft_rect.center = player_center
+            self.ft_pos = pygame.Vector2(player_center)
+            self.ft_vel = pygame.Vector2(self.vel.xy * self.ft_spd_scalar)
+
+    def update_future_player(self):
+        # Wrap around sides of screen
+        if self.ft_pos.x < -self.ft_rect.width / 2:
+            self.ft_pos.x = SCREEN_WIDTH + self.ft_rect.width / 2
+        if self.ft_pos.x > SCREEN_WIDTH + self.ft_rect.width / 2:
+            self.ft_pos.x = -self.ft_rect.width / 2
+        # Move
+        self.ft_pos += self.ft_vel
+        self.rect.midbottom = self.ft_pos
 
     def load_sprite_sheets(self):
         # Idle
@@ -134,12 +171,10 @@ class Player(pygame.sprite.Sprite):
             self.land_fx_frames.append(sheet.get_sprite(i * 44, 0, 44, 32))
 
     def animate(self):
+        # DO NOT TOUCH THIS; I GOT IT WORKING BY DIVINE INTERVENTION
         current_time = pygame.time.get_ticks()
-        # I know this looks messy and has duplicate code, but keep this conditional nested to adjust animation speed:
-        # >> if current_time - self.last_frame_update > 100
         if current_time - self.last_frame_update > 100:
             self.last_frame_update = current_time
-            # Land (DO NOT TOUCH THIS; I GOT IT WORKING BY DIVINE INTERVENTION)
             if self.is_landing and self.is_facing_right:
                 if self.current_land_frame < len(self.land_frames_r):
                     self.current_land_frame = (self.current_land_frame + 1) % len(self.land_frames_r)
@@ -198,7 +233,7 @@ class Player(pygame.sprite.Sprite):
         # WARNING: The smaller the platform width, the higher the chance of player falling through platform
         # ... at high y-velocities. Nothing can be done about this because of how pygame calls the update() method
         self.rect.y += 1
-        collisions = pygame.sprite.spritecollide(self, self.game.platform_sprites, False)
+        collisions = pygame.sprite.spritecollide(self, self.game.plat_sprites, False)
         self.rect.y -= 1
         # Only applies collision if player is falling, adjusts to ensure the floating doesn't float at edges
         if collisions:
@@ -207,8 +242,8 @@ class Player(pygame.sprite.Sprite):
                 if platform.rect.y > lowest_platform.rect.y:
                     lowest_platform = platform
             if not self.is_descending and self.vel.y > 0 and lowest_platform.rect.left - 10 < self.pos.x < lowest_platform.rect.right + 10:
-                if self.pos.y < lowest_platform.rect.centery:  # This makes player teleport up platforms realistically
-                    # Change "lowest_platform.rect.centery" to a y-value higher inside the platform sprite if we decide
+                if self.pos.y < lowest_platform.rect.bottom - lowest_platform.rect.height/4:  # This makes player teleport up platforms realistically
+                    # Change "lowest_platform.rect.bottom" to a y-value higher inside the platform sprite if we decide
                     # ... to make platforms with large widths (ex: lowest_platform.rect.centery - 10)
                     # ... or lower for low widths
                     self.pos.y = lowest_platform.rect.top
@@ -236,12 +271,47 @@ class Player(pygame.sprite.Sprite):
             elif self.pos.y > lowest_platform.rect.bottom:
                 self.is_descending = False
 
+    def scroll_with_screen(self):
+        # TODO: Change this to: if distance from player to boss is less than ___
+        if self.pos.y - self.rect.height <= SCREEN_HEIGHT / 4:
+            # Player moves down
+            self.pos.y += abs(self.vel.y)
+            # Platforms move down
+            for plat in self.game.plat_sprites:
+                plat.rect.y += abs(self.vel.y)
+            # Effects move down
+            for fx in self.game.fx_sprites:
+                fx.rect.y += abs(self.vel.y)
+            # Future player moves down
+            self.ft_pos.y += abs(self.vel.y)
+            # Bullets move down
+            for bullet in self.game.bull_sprites:
+                bullet.pos.y += abs(self.vel.y)
+
+    def check_death_eligibility(self):
+        # If player falls below bottom of screen, screen scrolls down suddenly ...
+        if self.pos.y - self.rect.height > SCREEN_HEIGHT:
+            for sprite in self.game.all_sprites:
+                sprite.rect.y -= max(self.vel.y, 10)
+                if sprite.rect.bottom < 0:
+                    # ... and dies
+                    sprite.kill()
+        # Game over
+        if len(self.game.plat_sprites) == 0:
+            self.game.is_playing = False
+            self.game.gui.draw_game_over_menu()
+
     def update(self):
         keys = pygame.key.get_pressed()
         self.acc = pygame.Vector2(0, GRAVITY_ACC)
         self.apply_platform_collisions()
         current_time = pygame.time.get_ticks()
         self.animate()
+        self.scroll_with_screen()
+        self.check_death_eligibility()
+        # Future player
+        self.send_future_player(current_time)
+        self.update_future_player()
 
         for event in self.game.events:
             if event.type == pygame.KEYDOWN and self.can_jump and current_time - self.last_jump_time >= self.JUMP_DELAY:
@@ -298,11 +368,4 @@ class Player(pygame.sprite.Sprite):
 
         # Calculated position will always represent midbottom of player sprite
         self.rect.midbottom = self.pos
-
-    def reset(self):
-        # Use this method to reset player's stats and stuff for new game
-        self.__init__(self.game)  # placeholder
-
-
-
 
