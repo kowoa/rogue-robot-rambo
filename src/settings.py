@@ -1,5 +1,9 @@
-""" USE THIS MODULE TO STORE GLOBAL CONSTANTS AND OTHER SETTINGS """
-
+# Name: settings.py
+# Purpose: Stores global constants and other settings that relate to the game
+# Version: 1.2
+# Date: 5 June 2020
+# Author(s): Khoa Hoang, Adrienne Lhuc Estrella, Pratham Kwatra, Matt Innaurato
+# Dependencies: None
 
 # Game settings
 SCREEN_TITLE = "ROGUE ROBOT RAMBO"
