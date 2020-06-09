@@ -21,7 +21,7 @@ Bullet icon: <a target="_blank" href="https://icons8.com/icons/set/bullet">Bulle
 Blazer Trail: dl-sounds.com
 bfxr.net
 soundbible.org
-opengameart.org  *** This site is litty, mine homies ***
+opengameart.org
 "Chiptune_Adventures_1.ogg" -> SubspaceAudio
 "Summer_Park.ogg" -> Scribe
 Kenney's Audio Packs

@@ -2,7 +2,7 @@
 # Purpose: Controls all methods/attributes related to the player. Also controls the graphics and FX of the player.
 # Version: 3.0
 # Date: 5 June 2020
-# Author(s): Khoa Hoang, Matt Innaurato
+# Author(s): Khoa Hoang, Matt Innaurato, Adrienne Lhuc Estrella
 # Dependencies: pygame, paths, settings, utils, projectiles, gun, and fx modules
 
 

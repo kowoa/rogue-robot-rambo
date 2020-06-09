@@ -7,7 +7,7 @@ People working on this project:
 
 A short description of the project:
 
-Our game is a roguelike 2D platformer where the player tries to kill the AI.
+Our game is a 2D platformer where the player tries to kill the AI.
 This is a game where the player is the boss and the AI adapts to their patterns.
 It will have pixel/sprite graphics and will be programmed primarily in Python.
 The defining feature of this game entails that the AI learns your moves and

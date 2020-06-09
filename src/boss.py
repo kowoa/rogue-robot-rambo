@@ -2,7 +2,7 @@
 # Purpose: Defines the boss character that hovers at the top of the screen and tries to damage the player
 # Version: 2.1
 # Date: 5 June 2020
-# Author(s): Khoa Hoang, Matt Innaurato
+# Author(s): Khoa Hoang, Matt Innaurato, Adrienne Lhuc Estrella
 # Dependencies: pygame, settings, projectiles, paths, utils, and random modules
 
 import pygame as pg

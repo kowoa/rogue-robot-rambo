@@ -35,6 +35,8 @@ background_score = str(parent_path / "res/backgrounds/menus/score_menu.png")
 # Our Pics
 adrienne_path = str(parent_path / "res/extra/adriennepic.jpeg")
 khoa_path = str(parent_path / "res/extra/khoapic.jpeg")
+matt_path = str(parent_path / "res/extra/mattpic.jpg")
+pk_path = str(parent_path / "res/extra/pkpic.jpg")
 
 # Player sprite sheet paths
 p = parent_path / "res/sprites/player"
